@@ -1,0 +1,21 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">Управление подпиской</h1>
+
+<div class="card mb-6">
+    <h2 class="text-2xl font-bold mb-4">Текущий план: <span class="gradient-text">{{ user.subscription.plan|title
+            }}</span></h2>
+    <p class="text-gray-400">Статус: {{ user.subscription.status }}</p>
+</div>
+
+<div class="grid md:grid-cols-3 gap-6">
+    {% for plan in plans %}
+    <div class="card">
+        <h3 class="text-2xl font-bold mb-2">{{ plan.name }}</h3>
+        <div class="text-3xl font-bold mb-4">{{ plan.price }}</div>
+        <button class="btn btn-outline w-full">Выбрать</button>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

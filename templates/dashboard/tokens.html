@@ -1,0 +1,28 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">Токены/Баллы</h1>
+
+<div class="card mb-8">
+    <div class="text-5xl font-bold gradient-text mb-2">{{ user.tokens }}</div>
+    <div class="text-gray-400">Доступно токенов</div>
+</div>
+
+<h2 class="text-2xl font-bold mb-6">Купить токены</h2>
+<div class="grid md:grid-cols-3 gap-6">
+    {% for pkg in packages %}
+    <div class="card">
+        <div class="text-3xl font-bold mb-2">{{ pkg.tokens }}</div>
+        <div class="text-gray-400 mb-1">токенов</div>
+        {% if pkg.bonus %}<div class="text-sm text-green-400 mb-4">+ {{ pkg.bonus }} бонусных</div>{% endif %}
+        <div class="text-2xl font-bold mb-4">{{ pkg.price }}</div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="amount" value="{{ pkg.tokens }}">
+            <input type="hidden" name="bonus" value="{{ pkg.bonus }}">
+            <button type="submit" class="btn gradient-bg text-white w-full">Купить</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

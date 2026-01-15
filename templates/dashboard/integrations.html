@@ -1,0 +1,23 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">API Интеграции</h1>
+
+<div class="card mb-6">
+    <form method="post" class="flex gap-4">
+        {% csrf_token %}
+        <input type="text" name="name" class="input flex-1" placeholder="Название ключа">
+        <button type="submit" class="btn gradient-bg text-white">Создать ключ</button>
+    </form>
+</div>
+
+<div class="space-y-4">
+    {% for key in api_keys %}
+    <div class="card">
+        <div class="font-bold mb-2">{{ key.name }}</div>
+        <code class="block p-2 bg-gray-900 rounded font-mono text-sm">{{ key.key }}</code>
+        <div class="text-sm text-gray-400 mt-2">Создан: {{ key.created_at|date:"d.m.Y" }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

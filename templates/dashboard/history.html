@@ -1,0 +1,26 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">История использования</h1>
+
+<div class="card">
+    <table class="w-full">
+        <thead>
+            <tr class="border-b border-gray-700">
+                <th class="text-left py-3">Действие</th>
+                <th class="text-left py-3">Токены</th>
+                <th class="text-left py-3">Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in history %}
+            <tr class="border-b border-gray-800">
+                <td class="py-4">{{ item.action }}</td>
+                <td class="py-4 text-yellow-400">{{ item.tokens_used }}</td>
+                <td class="py-4 text-gray-400">{{ item.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

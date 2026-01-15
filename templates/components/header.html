@@ -1,0 +1,90 @@
+<header class="sticky top-0 z-50 py-4">
+    <nav class="container mx-auto px-4">
+        <div class="glass border-2 border-slate-200 rounded-full px-6 py-2 flex items-center justify-between shadow-lg">
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="text-2xl font-bold gradient-text">
+                NERMAN.AI
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="{% url 'home' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Главная</a>
+                <a href="{% url 'product' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">О
+                    продукте</a>
+                <a href="{% url 'pricing' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Подписка</a>
+                <a href="{% url 'about' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">О
+                    нас</a>
+                <a href="{% url 'faq' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">FAQ</a>
+                <a href="{% url 'blog' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Блог</a>
+                <a href="{% url 'contact' %}"
+                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Контакты</a>
+            </div>
+
+            <!-- Auth Buttons -->
+            <div class="hidden md:flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}"
+                    class="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-slate-800 transition-all">
+                    {{ user.first_name }}
+                </a>
+                <a href="{% url 'logout' %}"
+                    class="px-6 py-2 bg-slate-100 text-slate-900 border border-slate-200 rounded-full font-medium hover:bg-slate-200 transition-all">Выйти</a>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="px-6 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full font-medium hover:border-primary-500 transition-all">
+                    Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-primary rounded-full">
+                    Регистрация
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-slate-800">
+                ☰
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden mt-4 pb-4 space-y-2 bg-white rounded-2xl shadow-xl p-4 border border-slate-100">
+            <a href="{% url 'home' %}" class="block px-4 py-2 bg-black text-white rounded-full">Главная</a>
+            <a href="{% url 'product' %}" class="block px-4 py-2 bg-black text-white rounded-full">О продукте</a>
+            <a href="{% url 'pricing' %}" class="block px-4 py-2 bg-black text-white rounded-full">Подписка</a>
+            <a href="{% url 'about' %}" class="block px-4 py-2 bg-black text-white rounded-full">О нас</a>
+            <a href="{% url 'faq' %}" class="block px-4 py-2 bg-black text-white rounded-full">FAQ</a>
+            <a href="{% url 'blog' %}" class="block px-4 py-2 bg-black text-white rounded-full">Блог</a>
+            <a href="{% url 'contact' %}" class="block px-4 py-2 bg-black text-white rounded-full">Контакты</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+                class="block px-4 py-2 bg-black text-white rounded-full font-medium">Dashboard</a>
+            <a href="{% url 'logout' %}"
+                class="block px-4 py-2 bg-slate-100 text-slate-600 rounded-full font-medium">Выйти</a>
+            {% else %}
+            <div class="flex flex-col space-y-2 pt-2 border-t border-slate-100">
+                <a href="{% url 'login' %}"
+                    class="block text-center py-2 bg-black text-white rounded-full transition-all">
+                    Войти
+                </a>
+                <a href="{% url 'register' %}"
+                    class="block text-center py-2 text-white gradient-bg rounded-full shadow-lg">
+                    Регистрация
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<script>
+    document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>

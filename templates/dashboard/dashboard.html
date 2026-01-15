@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">Привет, <span class="gradient-text">{{ user.first_name }}</span>! 👋</h1>
+
+<div class="grid md:grid-cols-4 gap-6 mb-8">
+    <div class="card">
+        <div class="text-yellow-400 text-3xl mb-2">🪙</div>
+        <div class="text-3xl font-bold mb-1">{{ user.tokens }}</div>
+        <div class="text-slate-500 text-sm">Доступно токенов</div>
+    </div>
+    <div class="card">
+        <div class="text-primary-400 text-3xl mb-2">💬</div>
+        <div class="text-3xl font-bold mb-1">{{ total_chats }}</div>
+        <div class="text-slate-500 text-sm">AI Чатов</div>
+    </div>
+    <div class="card">
+        <div class="text-green-400 text-3xl mb-2">📊</div>
+        <div class="text-3xl font-bold mb-1">↑ 24%</div>
+        <div class="text-slate-500 text-sm">Активность</div>
+    </div>
+    <div class="card">
+        <div class="text-purple-400 text-3xl mb-2">⏱️</div>
+        <div class="text-3xl font-bold mb-1">18 ч</div>
+        <div class="text-slate-500 text-sm">Сэкономлено</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 class="text-2xl font-bold mb-4">Быстрые действия</h2>
+    <div class="space-y-3">
+        <a href="{% url 'ai_tasks' %}" class="block p-4 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+            Запустить новую AI задачу →
+        </a>
+        <a href="{% url 'tokens' %}" class="block p-4 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+            Купить токены →
+        </a>
+    </div>
+</div>
+{% endblock %}

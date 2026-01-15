@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% block extra_css %}
+<!-- Chat specific styles are now in style.css -->
+{% endblock %}
+
+<div class="chat-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <form method="post" action="{% url 'create_chat' %}">
+                {% csrf_token %}
+                <button class="new-chat-btn">
+                    <span style="font-size: 1.25rem;">+</span>
+                    Новый чат
+                </button>
+            </form>
+        </div>
+
+        <div class="chat-list">
+            <div class="chat-list-title">ВАШИ ЧАТЫ</div>
+            {% for chat in chats %}
+            <a href="?chat={{ chat.id }}"
+                class="chat-item {% if active_chat and active_chat.id == chat.id %}active{% endif %}">
+                <div style="font-size: 1.25rem;">✏️</div>
+                <div class="chat-item-content">
+                    <div class="chat-item-title">{{ chat.title }}</div>
+                    <div class="chat-item-meta">{{ chat.messages.count }} сообщений</div>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn"
+                        onclick="shareChat(event, '{{ chat.id }}', '{{ chat.title }}')">📤</button>
+                </div>
+            </a>
+            {% empty %}
+            <div style="color: #888; font-size: 0.875rem; text-align: center; padding: 2rem 1rem;">
+                Нет чатов.<br>Создайте новый!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area">
+        {% if active_chat %}
+        <div class="messages-container" id="messages">
+            {% if active_chat.messages.count > 0 %}
+            {% for msg in active_chat.messages.all %}
+            <div class="message {{ msg.role }}">
+                <div class="message-content">{{ msg.content }}</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <!-- Empty chat state -->
+            <div
+                style="flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; color: #888;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+                <p>Этот чат пуст. Начните разговор ниже!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="input-area">
+            <form id="chatForm" class="input-form">
+                {% csrf_token %}
+                <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                <input type="text" name="message" id="messageInput" class="input-field" placeholder="Задайте вопрос..."
+                    required autocomplete="off">
+                <button type="submit" class="send-btn">Отправить</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">💬</div>
+            <h2 class="empty-state-title">Что сегодня поищем?</h2>
+            <p class="empty-state-text">Создайте новый чат, чтобы начать работу с AI</p>
+
+            <!-- Trending Instagram Songs -->
+            <div class="trending-section">
+                <div class="trending-title">
+                    <span>🎵</span>
+                    <span>Trending в Instagram</span>
+                </div>
+                <ul class="trending-list">
+                    <li class="trending-item">
+                        <div class="trending-number">1</div>
+                        <div class="trending-info">
+                            <div class="trending-song">Fortnight</div>
+                            <div class="trending-artist">Taylor Swift ft. Post Malone</div>
+                        </div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-number">2</div>
+                        <div class="trending-info">
+                            <div class="trending-song">Espresso</div>
+                            <div class="trending-artist">Sabrina Carpenter</div>
+                        </div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-number">3</div>
+                        <div class="trending-info">
+                            <div class="trending-song">Beautiful Things</div>
+                            <div class="trending-artist">Benson Boone</div>
+                        </div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-number">4</div>
+                        <div class="trending-info">
+                            <div class="trending-song">Too Sweet</div>
+                            <div class="trending-artist">Hozier</div>
+                        </div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-number">5</div>
+                        <div class="trending-info">
+                            <div class="trending-song">Lose Control</div>
+                            <div class="trending-artist">Teddy Swims</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal" id="shareModal">
+    <div class="modal-content">
+        <div class="modal-header">Поделиться чатом</div>
+        <div class="share-link">
+            <input type="text" id="shareLink" readonly>
+            <button class="copy-btn" onclick="copyShareLink()">Копировать</button>
+        </div>
+        <p style="color: #888; font-size: 0.875rem; margin-bottom: 1rem;">
+            Скопируйте эту ссылку и поделитесь с друзьями
+        </p>
+        <button class="close-modal" onclick="closeShareModal()">Закрыть</button>
+    </div>
+</div>
+
+<script>
+    let currentChatId = null;
+
+    function shareChat(event, chatId, chatTitle) {
+        event.preventDefault();
+        event.stopPropagation();
+        currentChatId = chatId;
+
+        // Generate share link (you can customize this URL)
+        const shareUrl = window.location.origin + '/dashboard/ai-tasks/?chat=' + chatId;
+        document.getElementById('shareLink').value = shareUrl;
+        document.getElementById('shareModal').classList.add('active');
+    }
+
+    function closeShareModal() {
+        document.getElementById('shareModal').classList.remove('active');
+    }
+
+    function copyShareLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        document.execCommand('copy');
+
+        // Show feedback
+        const btn = event.target;
+        btn.textContent = 'Скопировано! ✓';
+        setTimeout(() => {
+            btn.textContent = 'Копировать';
+        }, 2000);
+    }
+
+    // Close modal on outside click
+    document.getElementById('shareModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeShareModal();
+        }
+    });
+
+    $(document).ready(function () {
+        // Auto-scroll to bottom on load
+        var messagesContainer = $('#messages');
+        if (messagesContainer.length) {
+            messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
+        }
+
+        $('#chatForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var formData = $(this).serialize();
+            var messageText = $('#messageInput').val().trim();
+
+            if (!messageText) return;
+
+            // Add user message to UI
+            $('#messages').append(`
+                <div class="message user">
+                    <div class="message-content">${escapeHtml(messageText)}</div>
+                </div>
+            `);
+
+            $('#messageInput').val('');
+
+            // Show loading indicator
+            $('#messages').append(`
+                <div class="message assistant" id="loading">
+                    <div class="message-content">
+                        <span style="opacity: 0.6;">Думаю...</span>
+                    </div>
+                </div>
+            `);
+
+            // Auto-scroll
+            $('#messages').scrollTop($('#messages')[0].scrollHeight);
+
+            // Send AJAX request
+            $.ajax({
+                url: '{% url "send_message" %}',
+                method: 'POST',
+                data: formData,
+                headers: { 'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val() },
+                success: function (data) {
+                    $('#loading').remove();
+                    $('#messages').append(`
+                        <div class="message assistant">
+                            <div class="message-content">${escapeHtml(data.response)}</div>
+                        </div>
+                    `);
+                    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+
+                    // Reload page to update chat title if needed
+                    if ($('#messages .message').length <= 2) {
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500);
+                    }
+                },
+                error: function (xhr) {
+                    $('#loading').remove();
+                    $('#messages').append(`
+                        <div class="message assistant">
+                            <div class="message-content" style="color: #ff6b6b;">
+                                ❌ Ошибка при отправке сообщения. Попробуйте снова.
+                            </div>
+                        </div>
+                    `);
+                    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+                }
+            });
+        });
+
+        // Focus input on load
+        $('#messageInput').focus();
+    });
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}

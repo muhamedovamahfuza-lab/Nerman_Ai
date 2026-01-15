@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-20">
+    <h1 class="text-5xl font-bold text-center mb-12">Выберите свой <span class="gradient-text">тарif</span></h1>
+
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {% for plan in plans %}
+        <div class="card {% if plan.highlighted %}border-2 border-primary-500 scale-105{% endif %}">
+            <h3 class="text-2xl font-bold mb-2">{{ plan.name }}</h3>
+            <div class="text-4xl font-bold mb-4">{{ plan.price }}</div>
+            <p class="text-slate-500 mb-4">{{ plan.tokens }} tokens/month</p>
+            <ul class="space-y-2 mb-6">
+                {% for feature in plan.features %}
+                <li class="flex items-center gap-2">
+                    <span class="text-primary-400">✓</span>
+                    <span>{{ feature }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'register' %}"
+                class="btn {% if plan.highlighted %}gradient-bg text-white{% else %}btn-outline{% endif %} w-full text-center">
+                Выбрать
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

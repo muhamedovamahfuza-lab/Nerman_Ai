@@ -1,0 +1,29 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<h1 class="text-4xl font-bold mb-6">Счета и оплата</h1>
+
+<div class="card">
+    <table class="w-full">
+        <thead>
+            <tr class="border-b border-gray-700">
+                <th class="text-left py-3">Номер</th>
+                <th class="text-left py-3">Сумма</th>
+                <th class="text-left py-3">Статус</th>
+                <th class="text-left py-3">Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr class="border-b border-gray-800">
+                <td class="py-4">{{ invoice.invoice_number }}</td>
+                <td class="py-4">${{ invoice.amount }}</td>
+                <td class="py-4"><span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">{{
+                        invoice.status }}</span></td>
+                <td class="py-4 text-gray-400">{{ invoice.created_at|date:"d.m.Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
