@@ -114,55 +114,91 @@ def delete_chat(request, chat_id):
 @require_POST
 def send_message(request):
     """Отправить сообщение в AI чат (AJAX)"""
-    chat_id = request.POST.get('chat_id')
-    message_text = request.POST.get('message')
-    
-    if not chat_id or not message_text:
-        return JsonResponse({'error': 'Missing data'}, status=400)
-    
-    chat = get_object_or_404(Chat, id=chat_id, user=request.user)
-    
-    # Сохраняем сообщение пользователя
-    user_message = Message.objects.create(
-        chat=chat,
-        role='user',
-        content=message_text
-    )
-    
-    # Обновляем название чата если это первое сообщение
-    if chat.messages.count() == 1:
-        chat.title = message_text[:50] + ('...' if len(message_text) > 50 else '')
-        chat.save()
-    
-    # Получаем ответ от AI
-    ai_service = AIService()
-    result = ai_service.send_message(message_text)
-    
-    # Сохраняем ответ AI
-    ai_message = Message.objects.create(
-        chat=chat,
-        role='assistant',
-        content=result['response'],
-        tokens_used=result['tokens_used']
-    )
-    
-    # Списываем токены с пользователя
-    request.user.tokens -= result['tokens_used']
-    request.user.save()
-    
-    # Записываем в историю
-    UsageHistory.objects.create(
-        user=request.user,
-        action=f'AI Chat: {message_text[:50]}...',
-        tokens_used=result['tokens_used']
-    )
-    
-    return JsonResponse({
-        'success': True,
-        'response': result['response'],
-        'tokens_used': result['tokens_used'],
-        'remaining_tokens': request.user.tokens
-    })
+    try:
+        chat_id = request.POST.get('chat_id')
+        message_text = request.POST.get('message')
+        
+        if not chat_id or not message_text:
+            return JsonResponse({'error': 'Chat ID va xabar majburiy'}, status=400)
+        
+        chat = get_object_or_404(Chat, id=chat_id, user=request.user)
+        
+        # Check if user has tokens (minimum 10 tokens required)
+        if request.user.tokens < 10:
+            return JsonResponse({
+                'error': 'Tokenlar yetarli emas! Iltimos, tokenlar sotib oling.',
+                'remaining_tokens': request.user.tokens
+            }, status=400)
+        
+        # Сохраняем сообщение пользователя
+        user_message = Message.objects.create(
+            chat=chat,
+            role='user',
+            content=message_text
+        )
+        
+        # Обновляем название чата если это первое сообщение
+        if chat.messages.count() == 1:
+            chat.title = message_text[:50] + ('...' if len(message_text) > 50 else '')
+            chat.save()
+        
+        # Получаем ответ от AI
+        ai_service = AIService()
+        result = ai_service.send_message(message_text)
+        
+        # Check if AI service returned an error
+        if result['tokens_used'] == 0 and ('xatolik' in result['response'].lower() or '❌' in result['response']):
+            # AI service error - still save the error message
+            ai_message = Message.objects.create(
+                chat=chat,
+                role='assistant',
+                content=result['response'],
+                tokens_used=0
+            )
+            return JsonResponse({
+                'success': False,
+                'response': result['response'],
+                'tokens_used': 0,
+                'remaining_tokens': request.user.tokens
+            })
+        
+        # Сохраняем ответ AI
+        ai_message = Message.objects.create(
+            chat=chat,
+            role='assistant',
+            content=result['response'],
+            tokens_used=result['tokens_used']
+        )
+        
+        # Списываем токены с пользователя
+        if result['tokens_used'] > 0:
+            request.user.tokens -= result['tokens_used']
+            request.user.save()
+            
+            # Записываем в историю
+            UsageHistory.objects.create(
+                user=request.user,
+                action=f'AI Chat: {message_text[:50]}...',
+                tokens_used=result['tokens_used']
+            )
+        
+        return JsonResponse({
+            'success': True,
+            'response': result['response'],
+            'tokens_used': result['tokens_used'],
+            'remaining_tokens': request.user.tokens
+        })
+        
+    except Exception as e:
+        # Log the error for debugging
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error in send_message: {str(e)}", exc_info=True)
+        
+        return JsonResponse({
+            'error': f'Xatolik yuz berdi: {str(e)}',
+            'success': False
+        }, status=500)
 
 
 @login_required

@@ -222,11 +222,24 @@
                 headers: { 'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val() },
                 success: function (data) {
                     $('#loading').remove();
-                    $('#messages').append(`
-                        <div class="message assistant">
-                            <div class="message-content">${escapeHtml(data.response)}</div>
-                        </div>
-                    `);
+
+                    // Check if response indicates an error
+                    if (data.success === false || data.error) {
+                        $('#messages').append(`
+                            <div class="message assistant">
+                                <div class="message-content" style="color: #ff6b6b;">
+                                    ${escapeHtml(data.response || data.error)}
+                                </div>
+                            </div>
+                        `);
+                    } else {
+                        $('#messages').append(`
+                            <div class="message assistant">
+                                <div class="message-content">${escapeHtml(data.response)}</div>
+                            </div>
+                        `);
+                    }
+
                     $('#messages').scrollTop($('#messages')[0].scrollHeight);
 
                     // Reload page to update chat title if needed
@@ -238,10 +251,19 @@
                 },
                 error: function (xhr) {
                     $('#loading').remove();
+
+                    let errorMsg = '❌ Xatolik yuz berdi';
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        errorMsg = response.error || response.message || errorMsg;
+                    } catch (e) {
+                        // Use default error message
+                    }
+
                     $('#messages').append(`
                         <div class="message assistant">
                             <div class="message-content" style="color: #ff6b6b;">
-                                ❌ Ошибка при отправке сообщения. Попробуйте снова.
+                                ${escapeHtml(errorMsg)}
                             </div>
                         </div>
                     `);

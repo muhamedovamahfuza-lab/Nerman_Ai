@@ -127,3 +127,7 @@ ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+
+# AI Service Configuration
+AI_API_KEY = config('AI_API_KEY', default=None)
+AI_API_TYPE = config('AI_API_TYPE', default='gemini')  # 'openai' or 'gemini'

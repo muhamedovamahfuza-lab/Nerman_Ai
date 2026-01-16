@@ -20,36 +20,97 @@ class AIService:
             openai.api_key = self.api_key
 
     def send_message(self, message: str, chat_history: list = None) -> dict:
-        try:
-            if not self.api_key:
-                return {
-                    'response': 'API kalit topilmadi. Iltimos, Render Environment Variables bo\'limiga AI_API_KEY qo\'shing.',
-                    'tokens_used': 0
-                }
+        """Send message to AI and get response with improved error handling"""
+        
+        # Check if API key exists
+        if not self.api_key:
+            logger.warning("AI API key not configured")
+            return {
+                'response': 'API kalit topilmadi. Iltimos, .env faylida AI_API_KEY sozlang yoki administratorga murojaat qiling.',
+                'tokens_used': 0
+            }
 
+        try:
             # --- OPENAI BILAN ISHLASH ---
             if self.api_type == 'openai':
-                response = openai.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": message}]
-                )
-                return {
-                    'response': response.choices[0].message.content,
-                    'tokens_used': response.usage.total_tokens
-                }
+                try:
+                    response = openai.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": message}],
+                        max_tokens=500  # Limit response length
+                    )
+                    return {
+                        'response': response.choices[0].message.content,
+                        'tokens_used': response.usage.total_tokens
+                    }
+                except openai.AuthenticationError:
+                    logger.error("OpenAI authentication failed - invalid API key")
+                    return {
+                        'response': '❌ Autentifikatsiya xatosi: OpenAI API kaliti noto\'g\'ri yoki yaroqsiz. Iltimos, yangi API kalit oling.',
+                        'tokens_used': 0
+                    }
+                except openai.RateLimitError:
+                    logger.error("OpenAI rate limit exceeded")
+                    return {
+                        'response': '⚠️ So\'rovlar soni limitdan oshdi. Iltimos, bir oz kuting va qayta urinib ko\'ring.',
+                        'tokens_used': 0
+                    }
+                except openai.InsufficientQuotaError:
+                    logger.error("OpenAI insufficient quota/credits")
+                    return {
+                        'response': '💳 API hisobingizda yetarli mablag\' yo\'q. Iltimos, OpenAI hisobingizni to\'ldiring.',
+                        'tokens_used': 0
+                    }
+                except openai.APIError as e:
+                    logger.error(f"OpenAI API error: {str(e)}")
+                    return {
+                        'response': f'OpenAI API xatosi: {str(e)}. Iltimos, qayta urinib ko\'ring.',
+                        'tokens_used': 0
+                    }
 
             # --- GEMINI BILAN ISHLASH ---
             else:
-                response = self.model.generate_content(message)
-                tokens_used = (len(message) + len(response.text)) // 4
-                return {
-                    'response': response.text,
-                    'tokens_used': tokens_used
-                }
+                try:
+                    response = self.model.generate_content(message)
+                    
+                    # Check if response was blocked
+                    if not response.text:
+                        logger.warning("Gemini response was blocked or empty")
+                        return {
+                            'response': '⚠️ Javob bloklandi yoki bo\'sh. Iltimos, boshqa savol bering.',
+                            'tokens_used': 0
+                        }
+                    
+                    tokens_used = (len(message) + len(response.text)) // 4
+                    return {
+                        'response': response.text,
+                        'tokens_used': tokens_used
+                    }
+                except Exception as e:
+                    error_msg = str(e).lower()
+                    if 'api_key' in error_msg or 'authentication' in error_msg:
+                        logger.error("Gemini authentication failed")
+                        return {
+                            'response': '❌ Gemini API kaliti noto\'g\'ri. Iltimos, sozlamalarni tekshiring.',
+                            'tokens_used': 0
+                        }
+                    elif 'quota' in error_msg or 'limit' in error_msg:
+                        logger.error("Gemini quota exceeded")
+                        return {
+                            'response': '⚠️ Gemini limitdan oshdi. Iltimos, kuting yoki boshqa API kalit ishlating.',
+                            'tokens_used': 0
+                        }
+                    else:
+                        logger.error(f"Gemini error: {str(e)}")
+                        return {
+                            'response': f'Gemini xatosi: {str(e)}',
+                            'tokens_used': 0
+                        }
 
         except Exception as e:
-            logger.error(f"AI API Error: {str(e)}")
+            # Catch any unexpected errors
+            logger.error(f"Unexpected AI service error: {str(e)}", exc_info=True)
             return {
-                'response': f'AI so\'rovida xatolik: {str(e)}',
+                'response': f'❌ Kutilmagan xatolik yuz berdi: {str(e)}. Iltimos, administrator bilan bog\'laning.',
                 'tokens_used': 0
             }
