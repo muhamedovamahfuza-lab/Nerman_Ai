@@ -7,41 +7,67 @@
             </a>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-2">
-                <a href="{% url 'home' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Главная</a>
-                <a href="{% url 'product' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">О
-                    продукте</a>
-                <a href="{% url 'pricing' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Подписка</a>
-                <a href="{% url 'about' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">О
-                    нас</a>
-                <a href="{% url 'faq' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">FAQ</a>
-                <a href="{% url 'blog' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Блог</a>
-                <a href="{% url 'contact' %}"
-                    class="px-4 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full text-sm font-medium hover:border-primary-500 transition-all">Контакты</a>
+            <div class="hidden md:flex items-center space-x-1">
+                {% url 'home' as home_url %}
+                <a href="{{ home_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Дом
+                </a>
+
+                {% url 'product' as product_url %}
+                <a href="{{ product_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == product_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    О Продукте
+                </a>
+
+                {% url 'pricing' as pricing_url %}
+                <a href="{{ pricing_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == pricing_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Подписка
+                </a>
+
+                {% url 'about' as about_url %}
+                <a href="{{ about_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    О Нас
+                </a>
+
+                {% url 'faq' as faq_url %}
+                <a href="{{ faq_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == faq_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Chat Support
+                </a>
+
+                {% url 'blog' as blog_url %}
+                <a href="{{ blog_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == blog_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Блог
+                </a>
+
+                {% url 'contact' as contact_url %}
+                <a href="{{ contact_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Контакты
+                </a>
             </div>
 
             <!-- Auth Buttons -->
             <div class="hidden md:flex items-center space-x-4">
                 {% if user.is_authenticated %}
                 <a href="{% url 'dashboard' %}"
-                    class="px-6 py-2 bg-black text-white rounded-full font-semibold hover:bg-slate-800 transition-all">
-                    {{ user.first_name }}
+                    class="px-6 py-2.5 bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white rounded-full font-bold hover:shadow-lg transition-all">
+                    {{ user.first_name|default:user.email }}
                 </a>
                 <a href="{% url 'logout' %}"
-                    class="px-6 py-2 bg-slate-100 text-slate-900 border border-slate-200 rounded-full font-medium hover:bg-slate-200 transition-all">Выйти</a>
+                    class="px-6 py-2.5 text-slate-500 font-bold hover:text-[#157BFF] transition-all">Выйти</a>
                 {% else %}
                 <a href="{% url 'login' %}"
-                    class="px-6 py-2 bg-black text-white border-2 border-primary-500/30 rounded-full font-medium hover:border-primary-500 transition-all">
+                    class="px-6 py-2.5 text-[#157BFF] font-bold text-base hover:text-[#15488B] transition-all">
                     Войти
                 </a>
-                <a href="{% url 'register' %}" class="btn btn-primary rounded-full">
-                    Регистрация
+                <a href="{% url 'register' %}"
+                    class="px-8 py-3 bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">
+                    Зарегистрироваться
                 </a>
                 {% endif %}
             </div>
