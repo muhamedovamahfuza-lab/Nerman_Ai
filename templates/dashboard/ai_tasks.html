@@ -62,7 +62,7 @@
         </div>
 
         <div class="input-area">
-            <form id="chatForm" class="input-form">
+            <form id="chatForm" class="input-form" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                 <input type="text" name="message" id="messageInput" class="input-field" placeholder="Задайте вопрос..."
@@ -124,6 +124,7 @@
         {% endif %}
     </div>
 </div>
+</div>
 
 <!-- Share Modal -->
 <div class="modal" id="shareModal">
@@ -139,7 +140,9 @@
         <button class="close-modal" onclick="closeShareModal()">Закрыть</button>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
 <script>
     let currentChatId = null;
 
