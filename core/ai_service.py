@@ -10,14 +10,31 @@ class AIService:
     """OpenAI va Google Gemini bilan ishlovchi universal AI servisi"""
 
     def __init__(self):
+        # Get API configuration from Django settings
         self.api_key = settings.AI_API_KEY
-        self.api_type = settings.AI_API_TYPE  # settings.py da 'openai' yoki 'gemini' bo'lishi kerak
+        self.api_type = settings.AI_API_TYPE
+        
+        # Log configuration status (without exposing the key)
+        if self.api_key:
+            logger.info(f"AI Service initialized with {self.api_type} API (key present)")
+        else:
+            logger.warning(f"AI Service initialized but API key is missing! Check environment variable AI_API_KEY")
 
-        if self.api_type == 'gemini' and self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-pro')
-        elif self.api_type == 'openai' and self.api_key:
-            openai.api_key = self.api_key
+        # Configure AI service based on type
+        try:
+            if self.api_type == 'gemini' and self.api_key:
+                genai.configure(api_key=self.api_key)
+                self.model = genai.GenerativeModel('gemini-pro')
+                logger.info("Gemini AI model configured successfully")
+            elif self.api_type == 'openai' and self.api_key:
+                openai.api_key = self.api_key
+                logger.info("OpenAI configured successfully")
+            elif not self.api_key:
+                logger.warning(f"Cannot configure {self.api_type} - API key is missing")
+            else:
+                logger.warning(f"Unknown AI_API_TYPE: {self.api_type}")
+        except Exception as e:
+            logger.error(f"Failed to initialize {self.api_type} API: {str(e)}", exc_info=True)
 
     def send_message(self, message: str, chat_history: list = None) -> dict:
         """Send message to AI and get response with improved error handling"""

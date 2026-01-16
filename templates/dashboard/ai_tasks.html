@@ -143,12 +143,47 @@
 <script>
     let currentChatId = null;
 
+    // ============================================
+    // CSRF TOKEN HANDLING (Django Standard Method)
+    // ============================================
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function getCSRFToken() {
+        // Try to get from cookie first (preferred method)
+        let token = getCookie('csrftoken');
+
+        // Fallback to form field if cookie not available
+        if (!token) {
+            const tokenField = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (tokenField) {
+                token = tokenField.value;
+            }
+        }
+
+        return token;
+    }
+
+    // ============================================
+    // SHARE MODAL FUNCTIONS
+    // ============================================
     function shareChat(event, chatId, chatTitle) {
         event.preventDefault();
         event.stopPropagation();
         currentChatId = chatId;
 
-        // Generate share link (you can customize this URL)
         const shareUrl = window.location.origin + '/dashboard/ai-tasks/?chat=' + chatId;
         document.getElementById('shareLink').value = shareUrl;
         document.getElementById('shareModal').classList.add('active');
@@ -163,7 +198,6 @@
         shareLink.select();
         document.execCommand('copy');
 
-        // Show feedback
         const btn = event.target;
         btn.textContent = 'Скопировано! ✓';
         setTimeout(() => {
@@ -178,6 +212,9 @@
         }
     });
 
+    // ============================================
+    // CHAT FUNCTIONALITY
+    // ============================================
     $(document).ready(function () {
         // Auto-scroll to bottom on load
         var messagesContainer = $('#messages');
@@ -188,12 +225,25 @@
         $('#chatForm').on('submit', function (e) {
             e.preventDefault();
 
-            var formData = $(this).serialize();
             var messageText = $('#messageInput').val().trim();
-
             if (!messageText) return;
 
-            // Add user message to UI
+            // Get CSRF token
+            var csrfToken = getCSRFToken();
+            if (!csrfToken) {
+                console.error('CSRF token not found');
+                alert('❌ Xatolik: CSRF token topilmadi. Sahifani yangilang.');
+                return;
+            }
+
+            // Prepare form data
+            var chatId = $('input[name="chat_id"]').val();
+            var formData = {
+                'chat_id': chatId,
+                'message': messageText
+            };
+
+            // Add user message to UI immediately
             $('#messages').append(`
                 <div class="message user">
                     <div class="message-content">${escapeHtml(messageText)}</div>
@@ -214,12 +264,14 @@
             // Auto-scroll
             $('#messages').scrollTop($('#messages')[0].scrollHeight);
 
-            // Send AJAX request
+            // Send POST request via AJAX
             $.ajax({
                 url: '{% url "send_message" %}',
                 method: 'POST',
                 data: formData,
-                headers: { 'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val() },
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
                 success: function (data) {
                     $('#loading').remove();
 
@@ -233,31 +285,49 @@
                             </div>
                         `);
                     } else {
+                        // Success - add AI response
                         $('#messages').append(`
                             <div class="message assistant">
                                 <div class="message-content">${escapeHtml(data.response)}</div>
                             </div>
                         `);
+
+                        // Show token usage if available
+                        if (data.tokens_used && data.remaining_tokens !== undefined) {
+                            console.log(`Tokens used: ${data.tokens_used}, Remaining: ${data.remaining_tokens}`);
+                        }
                     }
 
                     $('#messages').scrollTop($('#messages')[0].scrollHeight);
 
-                    // Reload page to update chat title if needed
+                    // Reload page to update chat title if this is the first message
                     if ($('#messages .message').length <= 2) {
                         setTimeout(() => {
                             location.reload();
                         }, 500);
                     }
                 },
-                error: function (xhr) {
+                error: function (xhr, status, error) {
                     $('#loading').remove();
 
                     let errorMsg = '❌ Xatolik yuz berdi';
+                    let errorDetails = '';
+
+                    // Parse error response
                     try {
                         const response = JSON.parse(xhr.responseText);
                         errorMsg = response.error || response.message || errorMsg;
                     } catch (e) {
-                        // Use default error message
+                        // Could not parse JSON, use status text
+                        if (xhr.status === 403) {
+                            errorMsg = '❌ CSRF xatosi: Sahifani yangilang va qayta urinib ko\'ring';
+                        } else if (xhr.status === 500) {
+                            errorMsg = '❌ Server xatosi: Administrator bilan bog\'laning';
+                        } else if (xhr.status === 0) {
+                            errorMsg = '❌ Tarmoq xatosi: Internet ulanishini tekshiring';
+                        } else {
+                            errorMsg = `❌ Xatolik (${xhr.status}): ${xhr.statusText}`;
+                        }
                     }
 
                     $('#messages').append(`
@@ -268,6 +338,14 @@
                         </div>
                     `);
                     $('#messages').scrollTop($('#messages')[0].scrollHeight);
+
+                    // Log error for debugging
+                    console.error('Chat error:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: xhr.responseText,
+                        error: error
+                    });
                 }
             });
         });
@@ -276,6 +354,9 @@
         $('#messageInput').focus();
     });
 
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;

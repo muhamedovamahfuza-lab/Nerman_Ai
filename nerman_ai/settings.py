@@ -128,6 +128,23 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 
+# ============================================
 # AI Service Configuration
+# ============================================
 AI_API_KEY = config('AI_API_KEY', default=None)
 AI_API_TYPE = config('AI_API_TYPE', default='gemini')  # 'openai' or 'gemini'
+
+# Startup validation and logging for AI configuration
+import logging
+logger = logging.getLogger(__name__)
+
+if AI_API_KEY:
+    logger.info(f"✓ AI_API_KEY is configured (using {AI_API_TYPE})")
+else:
+    logger.warning("⚠ AI_API_KEY is not set! AI chat will not work. Set AI_API_KEY in environment variables.")
+    logger.warning("   For Render.com: Add AI_API_KEY in Environment tab")
+    logger.warning("   For local dev: Add AI_API_KEY to .env file")
+
+if AI_API_TYPE not in ['openai', 'gemini']:
+    logger.warning(f"⚠ Invalid AI_API_TYPE: {AI_API_TYPE}. Must be 'openai' or 'gemini'. Defaulting to 'gemini'.")
+    AI_API_TYPE = 'gemini'
