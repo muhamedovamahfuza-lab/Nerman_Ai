@@ -1,4 +1,5 @@
 import openai
+from openai import OpenAI
 import google.generativeai as genai
 from django.conf import settings
 import logging
@@ -13,6 +14,7 @@ class AIService:
         # Get API configuration from Django settings
         self.api_key = settings.AI_API_KEY
         self.api_type = settings.AI_API_TYPE
+        self.openai_client = None
         
         # Log configuration status (without exposing the key)
         if self.api_key:
@@ -27,8 +29,9 @@ class AIService:
                 self.model = genai.GenerativeModel('gemini-pro')
                 logger.info("Gemini AI model configured successfully")
             elif self.api_type == 'openai' and self.api_key:
-                openai.api_key = self.api_key
-                logger.info("OpenAI configured successfully")
+                # Use explicit client instantiation for OpenAI v1+
+                self.openai_client = OpenAI(api_key=self.api_key)
+                logger.info("OpenAI client configured successfully")
             elif not self.api_key:
                 logger.warning(f"Cannot configure {self.api_type} - API key is missing")
             else:
@@ -50,8 +53,12 @@ class AIService:
         try:
             # --- OPENAI BILAN ISHLASH ---
             if self.api_type == 'openai':
+                if not self.openai_client:
+                    # Try to initialize if not already done
+                    self.openai_client = OpenAI(api_key=self.api_key)
+
                 try:
-                    response = openai.chat.completions.create(
+                    response = self.openai_client.chat.completions.create(
                         model="gpt-3.5-turbo",
                         messages=[{"role": "user", "content": message}],
                         max_tokens=500  # Limit response length
