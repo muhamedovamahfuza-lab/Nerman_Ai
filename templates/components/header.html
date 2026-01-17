@@ -18,9 +18,8 @@
                         {% trans "Главная" %}
                     </a>
 
-                    {% url 'product' as product_url %}
-                    <a href="{{ product_url }}"
-                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == product_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    <a href="{% url 'home' %}#product" id="nav-product"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all text-slate-900 hover:text-[#157BFF]">
                         {% trans "О Продукте" %}
                     </a>
 
@@ -188,4 +187,26 @@
         document.getElementById('lang-input').value = langCode;
         document.getElementById('lang-form').submit();
     }
+
+    // Scroll Spy for Product Section
+    document.addEventListener('DOMContentLoaded', function () {
+        const productSection = document.getElementById('product');
+        const productNav = document.getElementById('nav-product');
+
+        if (productSection && productNav) {
+            window.addEventListener('scroll', function () {
+                const rect = productSection.getBoundingClientRect();
+                const offset = 150; // Offset for header height
+
+                // Check if section is active (near top of viewport)
+                if (rect.top <= offset && rect.bottom >= offset) {
+                    productNav.classList.remove('text-slate-900', 'hover:text-[#157BFF]');
+                    productNav.classList.add('bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg');
+                } else {
+                    productNav.classList.remove('bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg');
+                    productNav.classList.add('text-slate-900', 'hover:text-[#157BFF]');
+                }
+            });
+        }
+    });
 </script>
