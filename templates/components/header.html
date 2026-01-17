@@ -33,6 +33,12 @@
                     О Нас
                 </a>
 
+                {% url 'contact' as contact_url %}
+                <a href="{{ contact_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    Контакты
+                </a>
+
                 <!-- Language Switcher -->
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
@@ -73,24 +79,6 @@
                         </form>
                     </div>
                 </div>
-
-                {% url 'faq' as faq_url %}
-                <a href="{{ faq_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == faq_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Chat Support
-                </a>
-
-                {% url 'blog' as blog_url %}
-                <a href="{{ blog_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == blog_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Блог
-                </a>
-
-                {% url 'contact' as contact_url %}
-                <a href="{{ contact_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Контакты
-                </a>
             </div>
 
             <!-- Auth Buttons -->
