@@ -1,86 +1,90 @@
 {% load i18n %}
 <header class="sticky top-0 z-50 pt-[25px] pb-6">
     <nav class="container mx-auto px-4">
-        <div class="glass border-2 border-slate-200 rounded-full px-6 py-2 flex items-center justify-between shadow-lg">
-            <!-- Logo -->
-            <a href="{% url 'home' %}" class="text-2xl font-bold gradient-text font-orbitron">
-                NERMAN.AI
-            </a>
-
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-1">
-                {% url 'home' as home_url %}
-                <a href="{{ home_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "Главная" %}
+        <div class="flex items-center justify-between gap-4">
+            <!-- Main Navigation Group -->
+            <div
+                class="bg-slate-100 rounded-[15px] px-8 py-2 flex items-center shadow-lg h-[80px] flex-grow justify-between">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="text-2xl font-bold gradient-text font-orbitron mr-8">
+                    NERMAN.AI
                 </a>
 
-                {% url 'product' as product_url %}
-                <a href="{{ product_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == product_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "О Продукте" %}
-                </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1">
+                    {% url 'home' as home_url %}
+                    <a href="{{ home_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "Главная" %}
+                    </a>
 
-                {% url 'pricing' as pricing_url %}
-                <a href="{{ pricing_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == pricing_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "Подписка" %}
-                </a>
+                    {% url 'product' as product_url %}
+                    <a href="{{ product_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == product_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "О Продукте" %}
+                    </a>
 
-                {% url 'contact' as contact_url %}
-                <a href="{{ contact_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "Поддержка" %}
-                </a>
+                    {% url 'pricing' as pricing_url %}
+                    <a href="{{ pricing_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == pricing_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "Подписка" %}
+                    </a>
 
-                {% url 'about' as about_url %}
-                <a href="{{ about_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "О Нас" %}
-                </a>
+                    {% url 'contact' as contact_url %}
+                    <a href="{{ contact_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "Поддержка" %}
+                    </a>
 
-                <!-- Language Switcher -->
-                {% get_current_language as LANGUAGE_CODE %}
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
+                    {% url 'about' as about_url %}
+                    <a href="{{ about_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "О Нас" %}
+                    </a>
 
-                <div class="relative group ml-2">
-                    <button id="lang-menu-btn" onclick="toggleLangMenu()"
-                        class="px-5 py-2.5 rounded-full text-sm font-bold bg-black text-white hover:bg-gray-800 transition-all flex items-center shadow-lg">
-                        <span class="mr-1">
-                            {% if LANGUAGE_CODE == 'ru' %}Русский
-                            {% elif LANGUAGE_CODE == 'en' %}English
-                            {% elif LANGUAGE_CODE == 'uz' %}O'zbek
-                            {% else %}{{ LANGUAGE_CODE|upper }}{% endif %}
-                        </span>
-                        <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
-                            <path
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                    </button>
+                    <!-- Language Switcher -->
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
 
-                    <!-- Dropdown -->
-                    <div id="lang-dropdown"
-                        class="hidden absolute top-full left-0 mt-2 w-40 bg-black rounded-2xl shadow-xl overflow-hidden border border-gray-800 z-50">
-                        <form action="{% url 'set_language' %}" method="post" id="lang-form">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.path }}">
-                            <input name="language" type="hidden" id="lang-input">
-                            <div class="py-1">
-                                {% for language in languages %}
-                                <button type="button" onclick="submitLanguage('{{ language.code }}')"
-                                    class="block w-full text-left px-4 py-3 text-sm font-bold hover:bg-gray-800 transition-colors
-                                        {% if language.code == LANGUAGE_CODE %}text-[#157BFF]{% else %}text-white{% endif %}">
-                                    {{ language.name_local }}
-                                </button>
-                                {% endfor %}
-                            </div>
-                        </form>
+                    <div class="relative group ml-2">
+                        <button id="lang-menu-btn" onclick="toggleLangMenu()"
+                            class="px-5 py-2.5 rounded-full text-sm font-bold bg-black text-white hover:bg-gray-800 transition-all flex items-center shadow-lg">
+                            <span class="mr-1">
+                                {% if LANGUAGE_CODE == 'ru' %}Русский
+                                {% elif LANGUAGE_CODE == 'en' %}English
+                                {% elif LANGUAGE_CODE == 'uz' %}O'zbek
+                                {% else %}{{ LANGUAGE_CODE|upper }}{% endif %}
+                            </span>
+                            <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div id="lang-dropdown"
+                            class="hidden absolute top-full left-0 mt-2 w-40 bg-black rounded-2xl shadow-xl overflow-hidden border border-gray-800 z-50">
+                            <form action="{% url 'set_language' %}" method="post" id="lang-form">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.path }}">
+                                <input name="language" type="hidden" id="lang-input">
+                                <div class="py-1">
+                                    {% for language in languages %}
+                                    <button type="button" onclick="submitLanguage('{{ language.code }}')"
+                                        class="block w-full text-left px-4 py-3 text-sm font-bold hover:bg-gray-800 transition-colors
+                                            {% if language.code == LANGUAGE_CODE %}text-[#157BFF]{% else %}text-white{% endif %}">
+                                        {{ language.name_local }}
+                                    </button>
+                                    {% endfor %}
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Auth Buttons 396x80 -->
+            <!-- Auth Buttons -->
             <div class="hidden md:flex items-center space-x-4">
                 {% if user.is_authenticated %}
                 <a href="{% url 'dashboard' %}"
@@ -92,7 +96,7 @@
                     %}</a>
                 {% else %}
                 <div
-                    class="flex items-center justify-between bg-slate-100 rounded-[15px] p-2 w-[396px] h-[80px] shadow-lg">
+                    class="flex items-center justify-between bg-slate-100 rounded-[15px] p-2 w-[460px] h-[80px] shadow-lg">
                     <a href="{% url 'login' %}"
                         class="flex-1 flex items-center justify-center h-full rounded-[12px] text-[#157BFF] font-bold text-lg hover:text-[#15488B] transition-all">
                         {% trans "Войти" %}
