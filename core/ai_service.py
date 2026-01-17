@@ -67,15 +67,9 @@ class AIService:
                         'tokens_used': 0
                     }
                 except openai.RateLimitError:
-                    logger.error("OpenAI rate limit exceeded")
+                    logger.error("OpenAI rate limit or quota exceeded")
                     return {
-                        'response': '⚠️ So\'rovlar soni limitdan oshdi. Iltimos, bir oz kuting va qayta urinib ko\'ring.',
-                        'tokens_used': 0
-                    }
-                except openai.InsufficientQuotaError:
-                    logger.error("OpenAI insufficient quota/credits")
-                    return {
-                        'response': '💳 API hisobingizda yetarli mablag\' yo\'q. Iltimos, OpenAI hisobingizni to\'ldiring.',
+                        'response': '⚠️ Limitdan oshdi yoki hisobda mablag\' yetarli emas. Iltimos, OpenAI hisobingizni tekshiring (Quota/Billing).',
                         'tokens_used': 0
                     }
                 except openai.APIError as e:
