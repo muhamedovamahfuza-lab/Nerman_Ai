@@ -30,6 +30,42 @@
     </div>
 </section>
 
+<!-- Company Logos Marquee -->
+<section class="py-12 bg-transparent overflow-hidden border-b border-slate-100">
+    <div class="container mx-auto px-4 mb-4 text-center">
+        <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">Trusted by industry leaders</p>
+    </div>
+    <div class="relative w-full overflow-hidden">
+        <div class="flex w-[200%] animate-marquee">
+            <!-- First set of logos -->
+            <div class="flex items-center justify-around w-1/2 px-12">
+                <img src="{% static 'img/company_logos_strip.png' %}" alt="Trusted Companies"
+                    class="h-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-300 object-contain w-full">
+            </div>
+            <!-- Duplicate set for seamless loop -->
+            <div class="flex items-center justify-around w-1/2 px-12">
+                <img src="{% static 'img/company_logos_strip.png' %}" alt="Trusted Companies"
+                    class="h-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-300 object-contain w-full">
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee 20s linear infinite;
+        }
+    </style>
+</section>
+
 <!-- Features -->
 <section class="py-20 bg-slate-100">
     <div class="container mx-auto px-4">
