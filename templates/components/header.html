@@ -27,16 +27,16 @@
                     {% trans "Подписка" %}
                 </a>
 
+                {% url 'contact' as contact_url %}
+                <a href="{{ contact_url }}"
+                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    {% trans "Поддержка" %}
+                </a>
+
                 {% url 'about' as about_url %}
                 <a href="{{ about_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
                     {% trans "О Нас" %}
-                </a>
-
-                {% url 'contact' as contact_url %}
-                <a href="{{ contact_url }}"
-                    class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    {% trans "Контакты" %}
                 </a>
 
                 <!-- Language Switcher -->
@@ -118,11 +118,11 @@
                 %}</a>
             <a href="{% url 'pricing' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "Подписка"
                 %}</a>
-            <a href="{% url 'about' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "О Нас" %}</a>
             <a href="{% url 'faq' %}" class="block px-4 py-2 bg-black text-white rounded-full">FAQ</a>
             <a href="{% url 'blog' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "Блог" %}</a>
-            <a href="{% url 'contact' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "Контакты"
+            <a href="{% url 'contact' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "Поддержка"
                 %}</a>
+            <a href="{% url 'about' %}" class="block px-4 py-2 bg-black text-white rounded-full">{% trans "О Нас" %}</a>
 
             <!-- Mobile Language Switcher -->
             <div class="border-t border-slate-100 my-2 pt-2 pb-1">
