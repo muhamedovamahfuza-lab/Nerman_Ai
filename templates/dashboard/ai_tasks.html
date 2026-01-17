@@ -228,6 +228,9 @@
     // CHAT FUNCTIONALITY
     // ============================================
     $(document).ready(function () {
+        // Render Markdown content (images) in history
+        renderMarkdown();
+
         // Auto-scroll to bottom on load
         var messagesContainer = $('#messages');
         if (messagesContainer.length) {
@@ -392,6 +395,24 @@
     // ============================================
     // UTILITY FUNCTIONS
     // ============================================
+    function renderMarkdown() {
+        $('.message-content').each(function () {
+            var content = $(this).text(); // Use text() to safely get raw content
+            // Check for image markdown: ![alt](url)
+            if (content.includes('![') && content.includes('](')) {
+                // Simple regex for markdown images
+                var newContent = content.replace(/!\[(.*?)\]\((.*?)\)/g, function (match, alt, url) {
+                    return `<img src="${url}" alt="${alt}" style="max-width: 100%; border-radius: 10px; margin-top: 10px; margin-bottom: 10px;">`;
+                });
+
+                // Replace newlines with <br> for the rest of the text
+                newContent = newContent.replace(/\n/g, '<br>');
+
+                $(this).html(newContent);
+            }
+        });
+    }
+
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
