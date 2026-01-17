@@ -2,54 +2,57 @@
 
 {% block content %}
 <div class="flex h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
-        <div class="p-6 border-b border-gray-800">
-            <div class="text-2xl font-bold gradient-text">NERMAN.AI</div>
-        </div>
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
+                <div class="p-6 border-b border-gray-800">
+                        <div class="text-2xl font-bold gradient-text font-orbitron">
+                                NERMAN.AI</div>
+                </div>
 
-        <nav class="flex-1 p-4 overflow-y-auto">
-            <ul class="space-y-2">
-                <li><a href="{% url 'dashboard'  %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'dashboard' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🏠
-                        Главная</a></li>
-                <li><a href="{% url 'profile' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'profile' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">👤
-                        Профиль</a></li>
-                <li><a href="{% url 'subscription' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'subscription' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">💳
-                        Подписка</a></li>
-                <li><a href="{% url 'history' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'history' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">📜
-                        История</a></li>
-                <li><a href="{% url 'integrations' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'integrations' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🔌
-                        API</a></li>
-                <li><a href="{% url 'billing' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'billing' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🧾
-                        Счета</a></li>
-                <li><a href="{% url 'ai_tasks' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'ai_tasks' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">💬
-                        AI Чат</a></li>
-                <li><a href="{% url 'tokens' %}"
-                        class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'tokens' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🪙
-                        Токены</a></li>
-                {% if user.role == 'admin' %}
-                <li><a href="{% url 'admin_users' %}"
-                        class="block px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800">👨‍💼 Admin</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+                <nav class="flex-1 p-4 overflow-y-auto">
+                        <ul class="space-y-2">
+                                <li><a href="{% url 'dashboard'  %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'dashboard' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🏠
+                                                Главная</a></li>
+                                <li><a href="{% url 'profile' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'profile' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">👤
+                                                Профиль</a></li>
+                                <li><a href="{% url 'subscription' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'subscription' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">💳
+                                                Подписка</a></li>
+                                <li><a href="{% url 'history' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'history' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">📜
+                                                История</a></li>
+                                <li><a href="{% url 'integrations' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'integrations' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🔌
+                                                API</a></li>
+                                <li><a href="{% url 'billing' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'billing' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🧾
+                                                Счета</a></li>
+                                <li><a href="{% url 'ai_tasks' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'ai_tasks' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">💬
+                                                AI Чат</a></li>
+                                <li><a href="{% url 'tokens' %}"
+                                                class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'tokens' %}bg-primary-500 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">🪙
+                                                Токены</a></li>
+                                {% if user.role == 'admin' %}
+                                <li><a href="{% url 'admin_users' %}"
+                                                class="block px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800">👨‍💼
+                                                Admin</a></li>
+                                {% endif %}
+                        </ul>
+                </nav>
 
-        <div class="p-4 border-t border-gray-800">
-            <div class="text-sm text-gray-400 mb-2">{{ user.first_name }}</div>
-            <a href="{% url 'logout' %}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-800">🚪 Выйти</a>
-        </div>
-    </aside>
+                <div class="p-4 border-t border-gray-800">
+                        <div class="text-sm text-gray-400 mb-2">{{ user.first_name }}</div>
+                        <a href="{% url 'logout' %}"
+                                class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-800">🚪 Выйти</a>
+                </div>
+        </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto p-8">
-        {% block dashboard_content %}{% endblock %}
-    </main>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-8">
+                {% block dashboard_content %}{% endblock %}
+        </main>
 </div>
 {% endblock %}

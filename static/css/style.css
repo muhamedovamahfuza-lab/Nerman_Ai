@@ -8,6 +8,10 @@ body {
     /* slate-900 */
 }
 
+.font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
 .gradient-text {
     background: linear-gradient(90deg, #157BFF 0%, #15488B 100%);
     -webkit-background-clip: text;
