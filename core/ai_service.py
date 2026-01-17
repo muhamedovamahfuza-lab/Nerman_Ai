@@ -128,7 +128,30 @@ class AIService:
         except Exception as e:
             # Catch any unexpected errors
             logger.error(f"Unexpected AI service error: {str(e)}", exc_info=True)
-            return {
-                'response': f'❌ Kutilmagan xatolik yuz berdi: {str(e)}. Iltimos, administrator bilan bog\'laning.',
-                'tokens_used': 0
-            }
+    def generate_image(self, prompt: str, size: str = "1024x1024") -> dict:
+        """Generate image using DALL-E 3"""
+        if not self.api_key:
+            return {'error': 'API key not configured'}
+
+        try:
+            if self.api_type == 'openai':
+                if not self.openai_client:
+                    self.openai_client = OpenAI(api_key=self.api_key)
+
+                response = self.openai_client.images.generate(
+                    model="dall-e-3",
+                    prompt=prompt,
+                    size=size,
+                    quality="standard",
+                    n=1,
+                )
+                return {
+                    'image_url': response.data[0].url,
+                    'revised_prompt': response.data[0].revised_prompt
+                }
+            else:
+                 return {'error': 'Image generation is currently only supported with OpenAI.'}
+
+        except Exception as e:
+            logger.error(f"Image generation error: {str(e)}")
+            return {'error': str(e)}

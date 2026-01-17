@@ -78,6 +78,21 @@ body {
     box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
 
+.mode-select-input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    font-size: 0.875rem;
+    /* text-sm */
+    transition: all 0.3s;
+}
+
+.mode-select-input:focus {
+    outline: none;
+    border-color: #157BFF;
+}
+
 .glass {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);

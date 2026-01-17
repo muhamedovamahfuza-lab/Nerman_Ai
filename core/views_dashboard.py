@@ -142,52 +142,103 @@ def send_message(request):
             chat.title = message_text[:50] + ('...' if len(message_text) > 50 else '')
             chat.save()
         
+        # Получаем тип сообщения (text yoki image)
+        msg_type = request.POST.get('type', 'text')
+        
         # Получаем ответ от AI
         ai_service = AIService()
-        result = ai_service.send_message(message_text)
         
-        # Check if AI service returned an error
-        if result['tokens_used'] == 0 and ('xatolik' in result['response'].lower() or '❌' in result['response']):
-            # AI service error - still save the error message
+        if msg_type == 'image':
+            # Rasm generatsiya qilish
+            # Image generation costs usually higher, e.g., 50 tokens
+            if request.user.tokens < 50:
+                 return JsonResponse({
+                    'error': 'Rasm chizish uchun kamida 50 token kerak!',
+                    'remaining_tokens': request.user.tokens
+                }, status=400)
+
+            result = ai_service.generate_image(message_text)
+            
+            if 'error' in result:
+                 return JsonResponse({'error': result['error'], 'success': False})
+            
+            response_content = f"![Generated Image]({result['image_url']})\n\nPrompt: {result.get('revised_prompt', message_text)}"
+            tokens_cost = 50 # Fixed cost for image
+            
+            # Save AI message with image URL
+            ai_message = Message.objects.create(
+                chat=chat,
+                role='assistant',
+                content=response_content,
+                tokens_used=tokens_cost
+            )
+            
+            # Deduct tokens
+            request.user.tokens -= tokens_cost
+            request.user.save()
+            
+            # Record history
+            UsageHistory.objects.create(
+                user=request.user,
+                action=f'AI Image: {message_text[:30]}...',
+                tokens_used=tokens_cost
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'response': response_content,
+                'tokens_used': tokens_cost,
+                'remaining_tokens': request.user.tokens,
+                'is_image': True,
+                'image_url': result['image_url']
+            })
+
+        else:
+            # TEXT CHAT LOGIC (Existing)
+            result = ai_service.send_message(message_text)
+            
+            # Check if AI service returned an error
+            if result['tokens_used'] == 0 and ('xatolik' in result['response'].lower() or '❌' in result['response']):
+                # AI service error - still save the error message
+                ai_message = Message.objects.create(
+                    chat=chat,
+                    role='assistant',
+                    content=result['response'],
+                    tokens_used=0
+                )
+                return JsonResponse({
+                    'success': False,
+                    'response': result['response'],
+                    'tokens_used': 0,
+                    'remaining_tokens': request.user.tokens
+                })
+            
+            # Сохраняем ответ AI
             ai_message = Message.objects.create(
                 chat=chat,
                 role='assistant',
                 content=result['response'],
-                tokens_used=0
-            )
-            return JsonResponse({
-                'success': False,
-                'response': result['response'],
-                'tokens_used': 0,
-                'remaining_tokens': request.user.tokens
-            })
-        
-        # Сохраняем ответ AI
-        ai_message = Message.objects.create(
-            chat=chat,
-            role='assistant',
-            content=result['response'],
-            tokens_used=result['tokens_used']
-        )
-        
-        # Списываем токены с пользователя
-        if result['tokens_used'] > 0:
-            request.user.tokens -= result['tokens_used']
-            request.user.save()
-            
-            # Записываем в историю
-            UsageHistory.objects.create(
-                user=request.user,
-                action=f'AI Chat: {message_text[:50]}...',
                 tokens_used=result['tokens_used']
             )
-        
-        return JsonResponse({
-            'success': True,
-            'response': result['response'],
-            'tokens_used': result['tokens_used'],
-            'remaining_tokens': request.user.tokens
-        })
+            
+            # Списываем токены с пользователя
+            if result['tokens_used'] > 0:
+                request.user.tokens -= result['tokens_used']
+                request.user.save()
+                
+                # Записываем в историю
+                UsageHistory.objects.create(
+                    user=request.user,
+                    action=f'AI Chat: {message_text[:50]}...',
+                    tokens_used=result['tokens_used']
+                )
+            
+            return JsonResponse({
+                'success': True,
+                'response': result['response'],
+                'tokens_used': result['tokens_used'],
+                'remaining_tokens': request.user.tokens
+            })
         
     except Exception as e:
         # Log the error for debugging

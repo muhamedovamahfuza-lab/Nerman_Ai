@@ -38,6 +38,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,11 +85,23 @@ else:
 
 AUTH_USER_MODEL = 'core.User'
 
+from django.utils.translation import gettext_lazy as _
+
 # Internationalization
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 USE_TZ = True
+
+LANGUAGES = [
+    ('ru', _('Русский')),
+    ('en', _('English')),
+    ('uz', _('O\'zbek')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 
 STATIC_URL = '/static/'

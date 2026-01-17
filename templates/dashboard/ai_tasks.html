@@ -65,6 +65,15 @@
             <form id="chatForm" class="input-form" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                <input type="hidden" name="type" id="msgType" value="text">
+
+                <div style="margin-right: 10px;">
+                    <select id="modeSelector" class="mode-select-input" onchange="changeMode(this.value)">
+                        <option value="text">💬 Chat</option>
+                        <option value="image">🎨 Rasm</option>
+                    </select>
+                </div>
+
                 <input type="text" name="message" id="messageInput" class="input-field" placeholder="Задайте вопрос..."
                     required autocomplete="off">
                 <button type="submit" class="send-btn">Отправить</button>
@@ -241,15 +250,20 @@
 
             // Prepare form data
             var chatId = $('input[name="chat_id"]').val();
+            var msgType = $('#msgType').val(); // Get selected type
+
             var formData = {
                 'chat_id': chatId,
-                'message': messageText
+                'message': messageText,
+                'type': msgType
             };
 
             // Add user message to UI immediately
             $('#messages').append(`
                 <div class="message user">
-                    <div class="message-content">${escapeHtml(messageText)}</div>
+                    <div class="message-content">
+                        ${msgType === 'image' ? '🎨 ' : ''}${escapeHtml(messageText)}
+                    </div>
                 </div>
             `);
 
@@ -289,9 +303,17 @@
                         `);
                     } else {
                         // Success - add AI response
+                        let contentHtml = '';
+                        if (data.is_image) {
+                            contentHtml = `<img src="${data.image_url}" alt="Generated Image" style="max-width: 100%; border-radius: 10px; margin-top: 10px;">`;
+                            // Add prompt text if needed, or just the image
+                        } else {
+                            contentHtml = escapeHtml(data.response);
+                        }
+
                         $('#messages').append(`
                             <div class="message assistant">
-                                <div class="message-content">${escapeHtml(data.response)}</div>
+                                <div class="message-content">${contentHtml}</div>
                             </div>
                         `);
 
@@ -356,6 +378,16 @@
         // Focus input on load
         $('#messageInput').focus();
     });
+
+    function changeMode(mode) {
+        $('#msgType').val(mode);
+        const input = $('#messageInput');
+        if (mode === 'image') {
+            input.attr('placeholder', 'Rasm chizish uchun tariflang (English)...');
+        } else {
+            input.attr('placeholder', 'Savolingizni yozing...');
+        }
+    }
 
     // ============================================
     // UTILITY FUNCTIONS
