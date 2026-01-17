@@ -13,7 +13,7 @@
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-1">
                     {% url 'home' as home_url %}
-                    <a href="{{ home_url }}"
+                    <a href="{{ home_url }}" id="nav-home"
                         class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
                         {% trans "Главная" %}
                     </a>
@@ -188,25 +188,55 @@
         document.getElementById('lang-form').submit();
     }
 
-    // Scroll Spy for Product Section
+    // Scroll Spy
     document.addEventListener('DOMContentLoaded', function () {
-        const productSection = document.getElementById('product');
-        const productNav = document.getElementById('nav-product');
+        const sections = ['home', 'product'];
+        const navLinks = {
+            'home': document.getElementById('nav-home'),
+            'product': document.getElementById('nav-product')
+        };
+        const offset = 150;
+        const activeClasses = ['bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg'];
+        const inactiveClasses = ['text-slate-900', 'hover:text-[#157BFF]'];
 
-        if (productSection && productNav) {
-            window.addEventListener('scroll', function () {
-                const rect = productSection.getBoundingClientRect();
-                const offset = 150; // Offset for header height
+        function updateActiveSection() {
+            let currentSection = '';
 
-                // Check if section is active (near top of viewport)
-                if (rect.top <= offset && rect.bottom >= offset) {
-                    productNav.classList.remove('text-slate-900', 'hover:text-[#157BFF]');
-                    productNav.classList.add('bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg');
-                } else {
-                    productNav.classList.remove('bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg');
-                    productNav.classList.add('text-slate-900', 'hover:text-[#157BFF]');
+            // Check sections
+            for (const id of sections) {
+                const section = document.getElementById(id);
+                if (section) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= offset && rect.bottom >= offset) {
+                        currentSection = id;
+                    }
                 }
-            });
+            }
+
+            // Priority: Top of page is always Home
+            if (window.scrollY < 100 && document.getElementById('home')) {
+                currentSection = 'home';
+            }
+
+            // Update Links
+            for (const id of sections) {
+                const link = navLinks[id];
+                if (link) {
+                    if (id === currentSection) {
+                        link.classList.remove(...inactiveClasses);
+                        link.classList.add(...activeClasses);
+                    } else {
+                        link.classList.remove(...activeClasses);
+                        link.classList.add(...inactiveClasses);
+                    }
+                }
+            }
+        }
+
+        if (document.getElementById('home') || document.getElementById('product')) {
+            window.addEventListener('scroll', updateActiveSection);
+            // Initial check
+            updateActiveSection();
         }
     });
 </script>
