@@ -12,31 +12,31 @@
                 {% url 'home' as home_url %}
                 <a href="{{ home_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Дом
+                    {% trans "Главная" %}
                 </a>
 
                 {% url 'product' as product_url %}
                 <a href="{{ product_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == product_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    О Продукте
+                    {% trans "О Продукте" %}
                 </a>
 
                 {% url 'pricing' as pricing_url %}
                 <a href="{{ pricing_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == pricing_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Подписка
+                    {% trans "Подписка" %}
                 </a>
 
                 {% url 'about' as about_url %}
                 <a href="{{ about_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    О Нас
+                    {% trans "О Нас" %}
                 </a>
 
                 {% url 'contact' as contact_url %}
                 <a href="{{ contact_url }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == contact_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                    Контакты
+                    {% trans "Контакты" %}
                 </a>
 
                 <!-- Language Switcher -->
@@ -89,15 +89,16 @@
                     {{ user.first_name|default:user.email }}
                 </a>
                 <a href="{% url 'logout' %}"
-                    class="px-6 py-2.5 text-slate-500 font-bold hover:text-[#157BFF] transition-all">Выйти</a>
+                    class="px-6 py-2.5 text-slate-500 font-bold hover:text-[#157BFF] transition-all">{% trans "Выйти"
+                    %}</a>
                 {% else %}
                 <a href="{% url 'login' %}"
                     class="px-6 py-2.5 text-[#157BFF] font-bold text-base hover:text-[#15488B] transition-all">
-                    Войти
+                    {% trans "Войти" %}
                 </a>
                 <a href="{% url 'register' %}"
                     class="px-8 py-3 bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">
-                    Зарегистрироваться
+                    {% trans "Зарегистрироваться" %}
                 </a>
                 {% endif %}
             </div>
