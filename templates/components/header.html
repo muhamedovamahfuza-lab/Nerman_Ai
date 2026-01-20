@@ -12,15 +12,15 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-1">
-                    {% url 'home' as home_url %}
-                    <a href="{{ home_url }}" id="nav-home"
-                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == home_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
-                        {% trans "Главная" %}
-                    </a>
-
                     <a href="{% url 'home' %}#product" id="nav-product"
                         class="px-5 py-2.5 rounded-full text-sm font-bold transition-all text-slate-900 hover:text-[#157BFF]">
                         {% trans "О Продукте" %}
+                    </a>
+
+                    {% url 'ai_video_editor' as video_url %}
+                    <a href="{{ video_url }}"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == video_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                        {% trans "Видеоредактор" %}
                     </a>
 
                     {% url 'pricing' as pricing_url %}
@@ -35,9 +35,8 @@
                         {% trans "Поддержка" %}
                     </a>
 
-                    {% url 'about' as about_url %}
-                    <a href="{{ about_url }}"
-                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all {% if request.path == about_url %}bg-gradient-to-r from-[#157BFF] to-[#15488B] text-white shadow-lg{% else %}text-slate-900 hover:text-[#157BFF]{% endif %}">
+                    <a href="{% url 'home' %}#about" id="nav-about"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold transition-all text-slate-900 hover:text-[#157BFF]">
                         {% trans "О Нас" %}
                     </a>
 
@@ -190,10 +189,12 @@
 
     // Scroll Spy
     document.addEventListener('DOMContentLoaded', function () {
-        const sections = ['home', 'product'];
+        const sections = ['home', 'product', 'about', 'team'];
         const navLinks = {
             'home': document.getElementById('nav-home'),
-            'product': document.getElementById('nav-product')
+            'product': document.getElementById('nav-product'),
+            'about': document.getElementById('nav-about'),
+            'team': document.getElementById('nav-team')
         };
         const offset = 150;
         const activeClasses = ['bg-gradient-to-r', 'from-[#157BFF]', 'to-[#15488B]', 'text-white', 'shadow-lg'];

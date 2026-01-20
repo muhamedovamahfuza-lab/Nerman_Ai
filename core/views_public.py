@@ -100,3 +100,8 @@ def contact(request):
         form = ContactForm()
     
     return render(request, 'public/contact.html', {'form': form})
+
+
+def ai_video_editor(request):
+    """Страница ИИ-Видеоредактора"""
+    return render(request, 'public/ai_video_editor.html')

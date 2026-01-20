@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #157BFF;
+    }
+
+    .step-number {
+        background: linear-gradient(135deg, #157BFF 0%, #15488B 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-[#020617] text-white min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-32 overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <h1 class="text-6xl md:text-7xl font-bold mb-6 font-orbitron leading-tight">
+                        ИИ-<span class="gradient-text">Видеоредактор</span><br>Будущего
+                    </h1>
+                    <p class="text-xl text-slate-400 mb-8 max-w-xl">
+                        Создавайте профессиональный контент за считанные секунды с помощью передовых технологий
+                        NERMAN.AI. Наш ИИ возьмет на себя всю рутину.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="{% url 'register' %}"
+                            class="px-8 py-4 bg-gradient-to-r from-[#157BFF] to-[#15488B] rounded-full font-bold text-lg hover:shadow-[0_0_20px_rgba(21,123,255,0.4)] transition-all">
+                            Попробовать бесплатно
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-full"></div>
+                    <img src="C:/Users/user/.gemini/antigravity/brain/d6d88770-60e7-4de4-b197-6fa7f1b6883d/uploaded_image_1_1768930059842.png"
+                        alt="AI Mentor" class="relative z-10 w-full max-w-lg mx-auto drop-shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="py-24 border-t border-white/5">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 font-orbitron">Как это работает</h2>
+                <p class="text-slate-400">Процесс создания видео стал проще, чем когда-либо</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="feature-card p-8 rounded-3xl">
+                    <div
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        1</div>
+                    <img src="C:/Users/user/.gemini/antigravity/brain/d6d88770-60e7-4de4-b197-6fa7f1b6883d/uploaded_image_2_1768930059842.jpg"
+                        alt="Analysis" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <h3 class="text-2xl font-bold mb-4">Анализ контента</h3>
+                    <p class="text-slate-400">ИИ анализирует ваши исходные материалы, определяя лучшие моменты и
+                        ключевые темы.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="feature-card p-8 rounded-3xl">
+                    <div
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        2</div>
+                    <img src="C:/Users/user/.gemini/antigravity/brain/d6d88770-60e7-4de4-b197-6fa7f1b6883d/uploaded_image_3_1768930059842.jpg"
+                        alt="Editing" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <h3 class="text-2xl font-bold mb-4">Умный монтаж</h3>
+                    <p class="text-slate-400">Автоматическая склейка, цветокоррекция и наложение эффектов в соответствии
+                        с выбранным стилем.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="feature-card p-8 rounded-3xl">
+                    <div
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        3</div>
+                    <img src="C:/Users/user/.gemini/antigravity/brain/d6d88770-60e7-4de4-b197-6fa7f1b6883d/uploaded_image_4_1768930059842.jpg"
+                        alt="Final Result" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <h3 class="text-2xl font-bold mb-4">Готовый результат</h3>
+                    <p class="text-slate-400">Экспортируйте видео в любом формате, оптимизированном для всех популярных
+                        социальных сетей.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Level Up Section -->
+    <section class="py-24 bg-white/5 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2">
+                    <div class="relative">
+                        <div class="absolute -inset-10 bg-[#157BFF]/10 blur-[100px] rounded-full"></div>
+                        <img src="C:/Users/user/.gemini/antigravity/brain/d6d88770-60e7-4de4-b197-6fa7f1b6883d/uploaded_image_0_1768930059842.jpg"
+                            alt="Level Up"
+                            class="relative z-10 rounded-[40px] shadow-2xl w-full border border-white/10">
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-8 font-orbitron leading-tight">
+                        Достигайте новых <span class="text-[#157BFF]">вершин</span>
+                    </h2>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-[#157BFF]/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-[#157BFF]">✓</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Кинематографичное качество</h4>
+                                <p class="text-slate-400">Автоматическая стабилизация и улучшение разрешения до 4K.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-[#157BFF]/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-[#157BFF]">✓</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Синхронизация с музыкой</h4>
+                                <p class="text-slate-400">Монтаж под бит любой аудиодорожки для максимальной динамики.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-[#157BFF]/20 flex items-center justify-center flex-shrink-0">
+                                <span class="text-[#157BFF]">✓</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1">Умные субтитры</h4>
+                                <p class="text-slate-400">Генерация стильных субтитров на 50+ языках с идеальным
+                                    таймингом.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 text-center">
+        <div class="container mx-auto px-4">
+            <div
+                class="max-w-4xl mx-auto bg-gradient-to-br from-[#157BFF] to-[#15488B] p-16 rounded-[40px] shadow-2xl relative overflow-hidden">
+                <div
+                    class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 font-orbitron">Готовы изменить свой контент?</h2>
+                    <p class="text-xl mb-10 opacity-90">Присоединяйтесь к тысячам креаторов, которые уже используют
+                        NERMAN.AI</p>
+                    <a href="{% url 'register' %}"
+                        class="inline-block px-12 py-5 bg-white text-[#157BFF] rounded-full font-bold text-xl hover:bg-slate-100 transition-all shadow-xl">
+                        Начать сейчас
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

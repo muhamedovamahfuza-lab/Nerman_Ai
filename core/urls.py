@@ -10,6 +10,7 @@ urlpatterns = [
     path('faq/', views_public.faq, name='faq'),
     path('blog/', views_public.blog, name='blog'),
     path('contact/', views_public.contact, name='contact'),
+    path('ai-video-editor/', views_public.ai_video_editor, name='ai_video_editor'),
     
     # Аутентификация
     path('auth/register/', views_auth.register_view, name='register'),
