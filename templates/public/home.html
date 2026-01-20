@@ -109,9 +109,121 @@
 </section>
 
 
+<!-- Product Workflow Section -->
+<section id="product" class="py-24 bg-white overflow-hidden">
+    <div class="container mx-auto px-4">
+        <h2 class="text-5xl md:text-7xl font-extrabold text-center mb-24 text-[#157BFF]" data-aos="fade-down">
+            Как работает ваш ИИ-Видеоредактор
+        </h2>
+
+        <!-- Step 1 & 2: Robot at computer -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-16 mb-32" data-aos="fade-up">
+            <div class="md:w-1/2 space-y-12">
+                <div class="bg-blue-50/50 p-8 rounded-[30px] border-2 border-[#157BFF]/10 shadow-sm">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span
+                            class="w-12 h-12 bg-[#157BFF] text-white rounded-full flex items-center justify-center mr-4 shrink-0">1</span>
+                        Загрузите ваши исходники
+                    </h3>
+                    <p class="text-xl text-slate-600 leading-relaxed">
+                        Просто перетащите ваши видеофайлы в наш редактор. Наш ИИ мгновенно проанализирует контент и
+                        подготовит его к обработке.
+                    </p>
+                </div>
+                <div class="bg-blue-50/50 p-8 rounded-[30px] border-2 border-[#157BFF]/10 shadow-sm">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span
+                            class="w-12 h-12 bg-[#157BFF] text-white rounded-full flex items-center justify-center mr-4 shrink-0">2</span>
+                        ИИ находит лучшие моменты
+                    </h3>
+                    <p class="text-xl text-slate-600 leading-relaxed">
+                        Наши алгоритмы автоматически выделяют самые эмоциональные и важные части вашего видео, убирая
+                        лишнее.
+                    </p>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-4 bg-gradient-to-r from-[#157BFF] to-blue-400 rounded-[50px] blur-2xl opacity-20 group-hover:opacity-30 transition-opacity">
+                    </div>
+                    <img src="{% static 'img/product/step1_2.png' %}" alt="AI Editing"
+                        class="relative z-10 w-full max-w-[500px] h-auto rounded-[40px] shadow-2xl">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 & 4: Robot managing styles -->
+        <div class="flex flex-col md:flex-row-reverse items-center justify-between gap-16 mb-32" data-aos="fade-up">
+            <div class="md:w-1/2 space-y-12">
+                <div class="bg-blue-50/50 p-8 rounded-[30px] border-2 border-[#157BFF]/10 shadow-sm">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span
+                            class="w-12 h-12 bg-[#157BFF] text-white rounded-full flex items-center justify-center mr-4 shrink-0">3</span>
+                        Выберите стиль и темп
+                    </h3>
+                    <p class="text-xl text-slate-600 leading-relaxed">
+                        Выберите подходящий пресет: от динамичного TikTok до кинематографичного блога. ИИ подстроит
+                        монтаж под ваш выбор.
+                    </p>
+                </div>
+                <div class="bg-blue-50/50 p-8 rounded-[30px] border-2 border-[#157BFF]/10 shadow-sm">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-4 flex items-center">
+                        <span
+                            class="w-12 h-12 bg-[#157BFF] text-white rounded-full flex items-center justify-center mr-4 shrink-0">4</span>
+                        Автоматические эффекты и звук
+                    </h3>
+                    <p class="text-xl text-slate-600 leading-relaxed">
+                        Система добавит подходящую музыку, субтитры и визуальные эффекты, синхронизированные с ритмом
+                        видео.
+                    </p>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-4 bg-gradient-to-r from-blue-400 to-[#157BFF] rounded-[50px] blur-2xl opacity-20 group-hover:opacity-30 transition-opacity">
+                    </div>
+                    <img src="{% static 'img/product/step3_4.png' %}" alt="AI Styling"
+                        class="relative z-10 w-full max-w-[500px] h-auto rounded-[40px] shadow-2xl">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Final Player -->
+        <div class="flex flex-col items-center text-center max-w-4xl mx-auto" data-aos="zoom-in">
+            <div
+                class="bg-[#157BFF]/5 p-12 md:p-20 rounded-[60px] border-4 border-[#157BFF]/10 w-full relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-[#157BFF]/10 rounded-full blur-[100px] -mr-32 -mt-32">
+                </div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/10 rounded-full blur-[100px] -ml-32 -mb-32">
+                </div>
+
+                <div class="relative z-10">
+                    <div
+                        class="w-20 h-20 bg-[#157BFF] text-white rounded-3xl flex items-center justify-center text-4xl font-black mx-auto mb-8 shadow-xl">
+                        5</div>
+                    <h3 class="text-4xl md:text-5xl font-black text-slate-900 mb-8">Готово к публикации!</h3>
+                    <p class="text-2xl text-slate-600 mb-12 leading-relaxed">
+                        Ваше идеальное видео готово. Скачайте его или мгновенно опубликуйте во все ваши соцсети.
+                    </p>
+                    <div class="flex justify-center mb-12">
+                        <img src="{% static 'img/product/step5.png' %}" alt="Video Player Mockup"
+                            class="w-full max-w-[600px] h-auto drop-shadow-2xl">
+                    </div>
+                    <a href="{% url 'register' %}"
+                        class="inline-flex items-center px-12 py-5 bg-[#157BFF] text-white text-2xl font-black rounded-full hover:bg-[#15488B] hover:scale-105 transition-all shadow-2xl">
+                        Попробовать бесплатно <i class="fa-solid fa-bolt ml-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Features / Product Section - "Pain and Solutions" -->
-<section id="product" class="py-24 bg-gradient-to-br from-[#E3F2FD] via-[#BBDEFB] to-[#E3F2FD]" data-aos="fade-in"
-    style="min-height: 1200px;">
+<section id="pains-solutions" class="py-24 bg-gradient-to-br from-[#E3F2FD] via-[#BBDEFB] to-[#E3F2FD]"
+    data-aos="fade-in" style="min-height: 1200px;">
     <div class="container mx-auto px-4">
         <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-20 text-slate-900" data-aos="fade-down">
             Почему выбирают <span class="gradient-text font-orbitron">NERMAN.AI</span>
@@ -145,8 +257,10 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
                             <!-- Item 1 -->
                             <div class="flex flex-col items-start gap-6" data-aos="fade-up" data-aos-delay="300">
-                                <div class="w-20 h-20 flex items-center justify-center bg-[#157BFF]/10 rounded-2xl">
-                                    <i class="fa-solid fa-snail text-5xl text-slate-900"></i>
+                                <div
+                                    class="w-20 h-20 md:w-28 md:h-28 rounded-full bg-blue-50/50 flex items-center justify-center p-4">
+                                    <img src="{% static 'img/snail_icon.png' %}" alt="Snail"
+                                        class="w-full h-full object-contain">
                                 </div>
                                 <div class="space-y-4">
                                     <h3 class="text-2xl font-bold text-slate-900">Долгий процесс</h3>
@@ -258,12 +372,12 @@
 </section>
 
 <!-- About Us Section / O nas -->
-<section id="about" class="py-32 bg-white flex flex-col items-center justify-center"
-    style="min-height: 2774px; opacity: 1;">
-    <div class="container mx-auto px-4" style="max-width: 1440px;">
+<section id="about" class="py-20 bg-white flex flex-col items-center justify-center"
+    style="min-height: 1024px; opacity: 1;">
+    <div class="container mx-auto px-4" style="max-width: 1280px;">
 
         <!-- First Block: Company Introduction -->
-        <div class="flex flex-col md:flex-row items-center justify-between gap-16 mb-64" data-aos="fade-up">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-12 mb-20" data-aos="fade-up">
             <!-- Text Box -->
             <div class="lg:w-2/3 bg-white border-2 border-blue-200 rounded-[40px] p-12 md:p-16 shadow-xl"
                 data-aos="fade-right" data-aos-delay="200">
@@ -280,12 +394,12 @@
             <!-- Businessman Image -->
             <div class="lg:w-1/3 flex justify-center" data-aos="fade-left" data-aos-delay="400">
                 <img src="{% static 'img/about/businessman2.png' %}" alt="Businessman" class="h-auto object-contain"
-                    style="width: 320px; max-height: 700px;">
+                    style="width: 200px; max-height: 400px;">
             </div>
         </div>
 
         <!-- Second Block: Mission Statement -->
-        <div class="flex flex-col md:flex-row-reverse items-center justify-between gap-16 mb-64" data-aos="fade-up"
+        <div class="flex flex-col md:flex-row-reverse items-center justify-between gap-12 mb-20" data-aos="fade-up"
             data-aos-delay="100">
             <!-- Text Box -->
             <div class="lg:w-2/3 bg-white border-2 border-blue-200 rounded-[40px] p-12 md:p-16 shadow-xl"
@@ -301,14 +415,14 @@
 
             <!-- Large Businessman with Shadow Effect -->
             <div class="lg:w-1/3 flex justify-center relative" data-aos="fade-right" data-aos-delay="500">
-                <div style="width: 500px; min-height: 700px;" class="relative">
+                <div style="width: 300px; min-height: 400px;" class="relative">
                     <!-- Shadow person positioned to left and back -->
-                    <div class="absolute left-0 top-16" style="width: 300px; opacity: 0.2; filter: blur(5px);">
+                    <div class="absolute left-0 top-10" style="width: 180px; opacity: 0.2; filter: blur(4px);">
                         <img src="{% static 'img/about/businessman3.png' %}" alt="Shadow" class="w-full h-auto">
                     </div>
                     <!-- Main large businessman -->
                     <img src="{% static 'img/about/businessman1.png' %}" alt="Innovator"
-                        class="relative z-10 w-full h-auto object-contain" style="max-width: 500px;">
+                        class="relative z-10 w-full h-auto object-contain" style="max-width: 300px;">
                 </div>
             </div>
         </div>
@@ -329,7 +443,7 @@
             <!-- Businessman Image -->
             <div class="lg:w-1/3 flex justify-center" data-aos="fade-left" data-aos-delay="600">
                 <img src="{% static 'img/about/businessman3.png' %}" alt="Join Us" class="h-auto object-contain"
-                    style="width: 300px; max-height: 600px;">
+                    style="width: 200px; max-height: 400px;">
             </div>
         </div>
     </div>
