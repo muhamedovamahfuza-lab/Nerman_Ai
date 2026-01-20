@@ -44,3 +44,6 @@ msgstr "Chiqish"
 
 msgid "Зарегистрироваться"
 msgstr "Ro'yxatdan o'tish"
+
+msgid "Видеоредактор"
+msgstr "Video Muharriri"
