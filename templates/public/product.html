@@ -1,16 +1,16 @@
 {% block extra_css %}
 <style>
     .feature-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #F0F9FF;
+        border: 1px solid #E2E8F0;
         transition: all 0.3s ease;
     }
 
     .feature-card:hover {
         transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.08);
+        background: #FFFFFF;
         border-color: #157BFF;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     .step-number {
@@ -27,16 +27,16 @@
 {% endblock %}
 
 {% block content %}
-<div class="bg-[#020617] text-white min-h-screen">
+<div class="bg-white text-slate-900 min-h-screen">
     <!-- Hero Section -->
     <section class="relative pt-20 pb-32 overflow-hidden">
         <div class="container mx-auto px-4 relative z-10">
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2">
-                    <h1 class="text-6xl md:text-7xl font-bold mb-6 font-orbitron leading-tight">
+                    <h1 class="text-6xl md:text-7xl font-bold mb-6 font-orbitron leading-tight text-slate-900">
                         ИИ-<span class="gradient-text">Видеоредактор</span><br>Будущего
                     </h1>
-                    <p class="text-xl text-slate-400 mb-8 max-w-xl">
+                    <p class="text-xl text-slate-600 mb-8 max-w-xl">
                         Создавайте профессиональный контент за считанные секунды с помощью передовых технологий
                         NERMAN.AI. Наш ИИ возьмет на себя всю рутину.
                     </p>
@@ -57,47 +57,47 @@
     </section>
 
     <!-- How it Works -->
-    <section class="py-24 border-t border-white/5">
+    <section class="py-24 border-t border-slate-100">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 font-orbitron">Как это работает</h2>
-                <p class="text-slate-400">Процесс создания видео стал проще, чем когда-либо</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 font-orbitron text-slate-900">Как это работает</h2>
+                <p class="text-slate-600">Процесс создания видео стал проще, чем когда-либо</p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="feature-card p-8 rounded-3xl">
                     <div
-                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6 text-white">
                         1</div>
                     <img src="{% static 'img/product/robot_editing_1.jpg' %}" alt="Analysis"
                         class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-2xl font-bold mb-4">Анализ контента</h3>
-                    <p class="text-slate-400">ИИ анализирует ваши исходные материалы, определяя лучшие моменты
+                    <h3 class="text-2xl font-bold mb-4 text-slate-900">Анализ контента</h3>
+                    <p class="text-slate-600">ИИ анализирует ваши исходные материалы, определяя лучшие моменты
                         и ключевые темы.</p>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="feature-card p-8 rounded-3xl">
                     <div
-                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6 text-white">
                         2</div>
                     <img src="{% static 'img/product/robot_editing_2.jpg' %}" alt="Editing"
                         class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-2xl font-bold mb-4">Умный монтаж</h3>
-                    <p class="text-slate-400">Автоматическая склейка, цветокоррекция и наложение эффектов в
+                    <h3 class="text-2xl font-bold mb-4 text-slate-900">Умный монтаж</h3>
+                    <p class="text-slate-600">Автоматическая склейка, цветокоррекция и наложение эффектов в
                         соответствии с выбранным стилем.</p>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="feature-card p-8 rounded-3xl">
                     <div
-                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6">
+                        class="step-number w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mb-6 text-white">
                         3</div>
                     <img src="{% static 'img/product/robot_editing_final.jpg' %}" alt="Final Result"
                         class="w-full h-48 object-cover rounded-2xl mb-6">
-                    <h3 class="text-2xl font-bold mb-4">Готовый результат</h3>
-                    <p class="text-slate-400">Экспортируйте видео в любом формате, оптимизированном для всех
+                    <h3 class="text-2xl font-bold mb-4 text-slate-900">Готовый результат</h3>
+                    <p class="text-slate-600">Экспортируйте видео в любом формате, оптимизированном для всех
                         популярных социальных сетей.</p>
                 </div>
             </div>
