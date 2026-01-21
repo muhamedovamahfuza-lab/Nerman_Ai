@@ -180,5 +180,5 @@ def get_support_messages(request, ticket_id):
 
 
 def ai_video_editor(request):
-    """Страница ИИ-Видеоредактора"""
-    return render(request, 'public/ai_video_editor.html')
+    """Страница ИИ-Видеоредактора (теперь встроена в Product)"""
+    return render(request, 'public/product.html')

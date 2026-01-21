@@ -145,8 +145,12 @@ EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.conso
 # ============================================
 # AI Service Configuration
 # ============================================
-AI_API_KEY = config('AI_API_KEY', default=None)
-AI_API_TYPE = config('AI_API_TYPE', default='gemini')  # 'openai' or 'gemini'
+# Support both AI_API_KEY and OPENAI_API_KEY for convenience
+AI_API_KEY = config('AI_API_KEY', default=config('OPENAI_API_KEY', default=None))
+
+# Auto-detect type if not explicitly set
+default_type = 'openai' if AI_API_KEY and (AI_API_KEY.startswith('sk-') or AI_API_KEY.startswith('sk-proj-')) else 'gemini'
+AI_API_TYPE = config('AI_API_TYPE', default=default_type)
 
 # Startup validation and logging for AI configuration
 import logging
@@ -156,9 +160,7 @@ if AI_API_KEY:
     logger.info(f"✓ AI_API_KEY is configured (using {AI_API_TYPE})")
 else:
     logger.warning("⚠ AI_API_KEY is not set! AI chat will not work. Set AI_API_KEY in environment variables.")
-    logger.warning("   For Render.com: Add AI_API_KEY in Environment tab")
-    logger.warning("   For local dev: Add AI_API_KEY to .env file")
 
 if AI_API_TYPE not in ['openai', 'gemini']:
-    logger.warning(f"⚠ Invalid AI_API_TYPE: {AI_API_TYPE}. Must be 'openai' or 'gemini'. Defaulting to 'gemini'.")
-    AI_API_TYPE = 'gemini'
+    logger.warning(f"⚠ Invalid AI_API_TYPE: {AI_API_TYPE}. Defaulting to '{default_type}'.")
+    AI_API_TYPE = default_type
