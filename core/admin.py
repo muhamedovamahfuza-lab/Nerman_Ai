@@ -1,6 +1,26 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Subscription, Chat, Message, APIKey, Invoice, UsageHistory
+from .models import User, Subscription, Chat, Message, APIKey, Invoice, UsageHistory, SupportTicket, SupportMessage
+
+
+class SupportMessageInline(admin.TabularInline):
+    model = SupportMessage
+    extra = 1
+    readonly_fields = ['timestamp']
+
+
+@admin.register(SupportTicket)
+class SupportTicketAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'subject', 'status', 'created_at', 'updated_at']
+    list_filter = ['status', 'created_at']
+    search_fields = ['user__email', 'subject']
+    inlines = [SupportMessageInline]
+
+
+@admin.register(SupportMessage)
+class SupportMessageAdmin(admin.ModelAdmin):
+    list_display = ['ticket', 'sender', 'timestamp', 'is_read']
+    list_filter = ['sender', 'timestamp', 'is_read']
 
 
 @admin.register(User)

@@ -10,6 +10,8 @@ urlpatterns = [
     path('faq/', views_public.faq, name='faq'),
     path('blog/', views_public.blog, name='blog'),
     path('contact/', views_public.contact, name='contact'),
+    path('contact/send/', views_public.send_support_message, name='send_support_message'),
+    path('contact/messages/<int:ticket_id>/', views_public.get_support_messages, name='get_support_messages'),
     path('ai-video-editor/', views_public.ai_video_editor, name='ai_video_editor'),
     
     # Аутентификация

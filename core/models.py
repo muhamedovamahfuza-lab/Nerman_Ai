@@ -155,3 +155,43 @@ class UsageHistory(models.Model):
     
     def __str__(self):
         return f"{self.user.email} - {self.action}"
+class SupportTicket(models.Model):
+    """Модель тикета службы поддержки"""
+    
+    class Status(models.TextChoices):
+        OPEN = 'open', 'Open'
+        IN_PROGRESS = 'in_progress', 'In Progress'
+        CLOSED = 'closed', 'Closed'
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='support_tickets')
+    subject = models.CharField(max_length=200, default='Chat Support')
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-updated_at']
+    
+    def __str__(self):
+        return f"Ticket {self.id} - {self.user.email} ({self.status})"
+
+
+class SupportMessage(models.Model):
+    """Модель сообщения в тикете поддержки"""
+    
+    class Sender(models.TextChoices):
+        USER = 'user', 'User'
+        SUPPORT = 'support', 'Support'
+        SYSTEM = 'system', 'System'
+    
+    ticket = models.ForeignKey(SupportTicket, on_delete=models.CASCADE, related_name='messages')
+    sender = models.CharField(max_length=10, choices=Sender.choices)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['timestamp']
+    
+    def __str__(self):
+        return f"Message from {self.sender} in Ticket {self.ticket.id}"

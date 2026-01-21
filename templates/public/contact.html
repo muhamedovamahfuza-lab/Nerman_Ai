@@ -25,24 +25,64 @@
         font-family: 'Inter', sans-serif;
     }
 
-    .support-center {
+    .chat-messages {
         flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px 60px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-height: calc(100vh - 350px);
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 12px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        line-height: 1.5;
+        position: relative;
+    }
+
+    .message.user {
+        align-self: flex-end;
+        background: #157BFF;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message.support {
+        align-self: flex-start;
+        background: white;
+        color: #333;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .message-time {
+        font-size: 11px;
+        margin-top: 5px;
+        opacity: 0.7;
+        display: block;
+    }
+
+    .support-center {
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding-bottom: 50px;
+        padding: 20px;
     }
 
     .support-center h2 {
-        font-size: 48px;
+        font-size: 32px;
         font-weight: 800;
         color: #000;
         font-family: 'Inter', sans-serif;
     }
 
     .support-footer {
-        padding: 40px 60px;
+        padding: 20px 60px 40px;
         display: flex;
         align-items: center;
         gap: 15px;
@@ -66,11 +106,6 @@
         box-shadow: 0 4px 15px rgba(21, 123, 255, 0.2);
     }
 
-    .attach-btn:hover {
-        background: #15488B;
-        transform: scale(1.05);
-    }
-
     .input-wrapper {
         flex-grow: 1;
         position: relative;
@@ -86,7 +121,6 @@
         color: #333;
         background: white;
         outline: none;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     }
 
     .send-btn {
@@ -102,14 +136,9 @@
         justify-content: center;
         color: white;
         cursor: pointer;
-        transition: all 0.3s ease;
+        border: none;
     }
 
-    .send-btn:hover {
-        background: #15488B;
-    }
-
-    /* Decorative blurs */
     .blur-spot {
         position: absolute;
         width: 500px;
@@ -137,21 +166,12 @@
             padding: 20px;
         }
 
-        .support-header h1 {
-            font-size: 28px;
-        }
-
-        .support-center h2 {
-            font-size: 32px;
+        .chat-messages {
+            padding: 20px;
         }
 
         .support-footer {
             padding: 20px;
-            flex-wrap: wrap;
-        }
-
-        .support-input {
-            padding-right: 100px;
         }
     }
 </style>
@@ -166,21 +186,111 @@
         <h1>Служба поддержки</h1>
     </div>
 
-    <div class="support-center">
-        <h2>Чем я могу помочь?</h2>
+    <div class="chat-messages" id="chat-messages">
+        {% for msg in chat_messages %}
+        <div class="message {% if msg.sender == 'user' %}user{% else %}support{% endif %}">
+            <div class="message-content">{{ msg.content }}</div>
+            <span class="message-time">{{ msg.timestamp|date:"H:i" }}</span>
+        </div>
+        {% empty %}
+        <div class="support-center">
+            <h2>Чем я могу помочь?</h2>
+        </div>
+        {% endfor %}
     </div>
 
-    <form method="post" class="support-footer">
+    <form id="chat-form" class="support-footer">
         {% csrf_token %}
         <div class="attach-btn">
             <i class="fa-solid fa-file-circle-plus"></i>
         </div>
         <div class="input-wrapper">
-            <input type="text" name="message" class="support-input" placeholder="Написать сообщение" required>
+            <input type="text" id="message-input" class="support-input" placeholder="Написать сообщение" required
+                autocomplete="off">
             <button type="submit" class="send-btn">
                 <i class="fa-solid fa-paper-plane"></i>
             </button>
         </div>
     </form>
 </div>
+
+<script>
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('message-input');
+    const ticketId = "{{ ticket.id }}";
+    let lastMessageId = "{% if chat_messages %}{{ chat_messages.last.id }}{% else %}0{% endif %}";
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    scrollToBottom();
+
+    function appendMessage(content, sender, time) {
+        const msgDiv = document.createElement('div');
+        const senderClass = sender === 'user' ? 'user' : 'support';
+        msgDiv.className = `message ${senderClass}`;
+        msgDiv.innerHTML = `
+            <div class="message-content">${content}</div>
+            <span class="message-time">${time}</span>
+        `;
+
+        const emptyState = chatMessages.querySelector('.support-center');
+        if (emptyState) emptyState.remove();
+
+        chatMessages.appendChild(msgDiv);
+        scrollToBottom();
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const content = messageInput.value.trim();
+        if (!content) return;
+
+        messageInput.value = '';
+
+        try {
+            const response = await fetch("{% url 'send_support_message' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    content: content,
+                    ticket_id: ticketId
+                })
+            });
+
+            const data = await response.json();
+            if (data.status === 'success') {
+                // message is delivered, polling will catch it or we can append manually
+                // appendMessage(data.message.content, 'user', data.message.timestamp);
+                // Actually, polling is better to avoid double messages if we poll frequently
+                // but for instant feedback, appending user message is good.
+                pollMessages();
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    });
+
+    async function pollMessages() {
+        try {
+            const response = await fetch(`{% url 'get_support_messages' ticket.id %}?last_id=${lastMessageId}`);
+            const data = await response.json();
+
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    appendMessage(msg.content, msg.sender, msg.timestamp);
+                    lastMessageId = msg.id;
+                });
+            }
+        } catch (error) {
+            console.error('Error polling messages:', error);
+        }
+    }
+
+    setInterval(pollMessages, 3000); 
+</script>
 {% endblock %}
