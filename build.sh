@@ -14,4 +14,7 @@ python manage.py migrate --no-input
 echo "Setting up admin account..."
 python manage.py setup_admin
 
+echo "Loading FAQ data..."
+python manage.py load_faq
+
 echo "Build completed successfully!"

@@ -1,4 +1,4 @@
-import os
+from django.conf import settings
 import logging
 from telegram import Bot
 from telegram.error import TelegramError
@@ -13,9 +13,9 @@ def get_bot():
     
     if _bot_instance is None:
         try:
-            token = os.getenv('BOT_TOKEN')
+            token = getattr(settings, 'BOT_TOKEN', None)
             if not token:
-                raise ValueError("BOT_TOKEN environment variable is not set")
+                raise ValueError("BOT_TOKEN settings.py da topilmadi yoki .env faylida o'rnatilmagan")
             
             _bot_instance = Bot(token=token)
             logger.info("Telegram bot instance created successfully")
