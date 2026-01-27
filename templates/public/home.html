@@ -32,14 +32,13 @@
 </section>
 
 <!-- Company Logos Marquee -->
-<!-- Company Logos Marquee -->
 <section class="py-16 bg-transparent overflow-hidden border-b border-slate-100">
     <!-- Marquee Container -->
     <div class="relative w-full overflow-hidden group">
         <!-- Scrolling Wrapper -->
-        <div class="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+        <div class="flex w-max animate-marquee-robust group-hover:[animation-play-state:paused]">
             <!-- Logo Set 1 -->
-            <div class="flex items-center gap-16 md:gap-32 px-8 md:px-16">
+            <div class="flex items-center gap-16 md:gap-32 pr-16 md:pr-32">
                 <img src="{% static 'img/logos/google.png' %}" alt="Google"
                     class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
                             group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
@@ -61,8 +60,31 @@
                             group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
             </div>
 
-            <!-- Logo Set 2 (Duplicate for seamless loop) -->
-            <div class="flex items-center gap-16 md:gap-32 px-8 md:px-16">
+            <!-- Logo Set 2 -->
+            <div class="flex items-center gap-16 md:gap-32 pr-16 md:pr-32">
+                <img src="{% static 'img/logos/google.png' %}" alt="Google"
+                    class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
+                            group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
+
+                <img src="{% static 'img/logos/microsoft.png' %}" alt="Microsoft"
+                    class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
+                            group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
+
+                <img src="{% static 'img/logos/spotify.png' %}" alt="Spotify"
+                    class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
+                            group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
+
+                <img src="{% static 'img/logos/tesla.png' %}" alt="Tesla"
+                    class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
+                            group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
+
+                <img src="{% static 'img/logos/apple.png' %}" alt="Apple"
+                    class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
+                            group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
+            </div>
+
+            <!-- Logo Set 3 -->
+            <div class="flex items-center gap-16 md:gap-32 pr-16 md:pr-32">
                 <img src="{% static 'img/logos/google.png' %}" alt="Google"
                     class="h-7 md:h-10 w-auto object-contain grayscale opacity-60 transition-all duration-300 
                             group-hover:opacity-30 hover:!opacity-100 hover:!grayscale-0 hover:scale-105 cursor-pointer shrink-0">
@@ -86,18 +108,18 @@
         </div>
     </div>
     <style>
-        @keyframes marquee {
+        @keyframes marquee-robust {
             0% {
                 transform: translateX(0);
             }
 
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-33.33%);
             }
         }
 
-        .animate-marquee {
-            animation: marquee 40s linear infinite;
+        .animate-marquee-robust {
+            animation: marquee-robust 60s linear infinite;
         }
     </style>
 </section>
