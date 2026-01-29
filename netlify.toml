@@ -1,0 +1,6 @@
+[build]
+  command = "bash build.sh"
+  publish = "staticfiles"
+
+[build.environment]
+  PYTHON_VERSION = "3.10"
